@@ -9,13 +9,6 @@
     var player1 = prompt("What's player 1's name?", "X");
     var player2 = prompt("What's player 2's name?", "O");
 
-    //Returns the text of the element at the given html id
-    var getText = function (id) {
-        return document.getElementById(id).innerHTML;
-    };
-    //Sets the text of the element at the given html id
-    var setText = function (id, text) {
-        document.getElementById(id).innerHTML = text;
     var dom = {
         //Returns the text of the element at the given html id
         getText: function (id) {
@@ -44,9 +37,9 @@
         if (!player2) {
             player2 = "O";
         }
-        setText('turn', player1);
-        setText('player1', player1);
-        setText('player2', player2);
+        dom.setText('turn', player1);
+        dom.setText('player1', player1);
+        dom.setText('player2', player2);
     };
 
     playerNames();
@@ -54,14 +47,14 @@
     //Turns on the AI, sets the text of the labels relating to turn and player names, and resets the game
     var computerOn = function () {
         computer = true;
-        setText('player1', "The computer");
-        setText('player2', "You");
-        setText('tense', " have");
-        setText('X', 0);
-        setText('O', 0);
-        document.getElementById("turnlabel").style.display = "none";
-        document.getElementById("alone").style.display = "none";
-        document.getElementById("together").style.display = "inline";
+        dom.setText('player1', "The computer");
+        dom.setText('player2', "You");
+        dom.setText('tense', " have");
+        dom.setText('X', 0);
+        dom.setText('O', 0);
+        dom.hide("turnlabel");
+        dom.hide("alone");
+        dom.inline("together");
         reset();
     };
 
@@ -69,37 +62,37 @@
     var computerOff = function () {
         computer = false;
         playerNames();
-        setText('tense', " has");
-        setText('X', 0);
-        setText('O', 0);
-        document.getElementById("turnlabel").style.display = "inline";
-        document.getElementById("alone").style.display = "inline";
-        document.getElementById("together").style.display = "none";
+        dom.setText('tense', " has");
+        dom.setText('X', 0);
+        dom.setText('O', 0);
+        dom.inline("turnlabel");
+        dom.inline("alone");
+        dom.hide("together");
         reset();
     };
 
     //Clears the board and sets the first move to be true
     var reset = function () {
         for (i = 1; i < 10; i++) {
-            setText(i, "");
+            dom.setText(i, "");
         }
         firstMove = true;
     };
     //Called when a player makes a move. Determines who the current player is, sets the text of the square they clicked, checks for a win or a draw, and changes the turn label
     var move = function (n) {
-        var player = getText('turn');
+        var player = dom.getText('turn');
         var turn = "X";
         if ((player === player2) || (computer)) {
             turn = "O";
         }
         if (spaceAvailable(n)) {
             if (computer) {
-                setText(n, "O");
+                dom.setText(n, "O");
             } else {
                 if (turn === "X") {
-                    setText(n, "X");
+                    dom.setText(n, "X");
                 } else {
-                    setText(n, "O");
+                    dom.setText(n, "O");
                 }
             }
             if (!(winningMove(turn) || draw())) {
@@ -109,9 +102,9 @@
             }
             if (!computer) {
                 if (player === player1) {
-                    setText("turn", player2);
+                    dom.setText("turn", player2);
                 } else {
-                    setText("turn", player1);
+                    dom.setText("turn", player1);
                 }
             }
         }
@@ -133,32 +126,32 @@
         var middle = squares[1];
         var last = squares[2];
         //If all three are full, can't block
-        if ((getText(first) && getText(middle) && getText(last)) !== "") {
+        if ((dom.getText(first) && dom.getText(middle) && dom.getText(last)) !== "") {
             return false;
         }
         //Case 1: first and middle square match, should use last
-        if ((getText(first) === p) && (getText(middle) === p)) {
+        if ((dom.getText(first) === p) && (dom.getText(middle) === p)) {
             return last;
         }
         //Case 2: middle and last square match, should use first
-        else if ((getText(middle) === p) && (getText(last) === p)) {
+        else if ((dom.getText(middle) === p) && (dom.getText(last) === p)) {
             return first;
         }
         //Case 3: first and last square match, should use middle
-        else if ((getText(first) === p) && (getText(last) === p)) {
+        else if ((dom.getText(first) === p) && (dom.getText(last) === p)) {
             return middle;
         }
         return false;
     };
     //Finds possible forks, adds to the count of total forks found, and sets the computerTempFork or playerTempFork depending on who the current player is
     var fork = function (p, squares) {
-        var goal1 = getText(squares[0]);
-        var goal2 = getText(squares[1]);
+        var goal1 = dom.getText(squares[0]);
+        var goal2 = dom.getText(squares[1]);
         var fork = squares[2];
-        var a = getText(squares[3]);
-        var b = getText(squares[4]);
+        var a = dom.getText(squares[3]);
+        var b = dom.getText(squares[4]);
         //If goal wins or fork are empty, and a and b are right, a fork
-        if ((goal1 === "") && (goal2 === "") && (getText(fork) === "") && (a === p) && (b === p)) {
+        if ((goal1 === "") && (goal2 === "") && (dom.getText(fork) === "") && (a === p) && (b === p)) {
             if (p === "O") {
                 forkCount += 1;
             }
@@ -175,11 +168,11 @@
         var middle = squares[1];
         var last = squares[2];
         //Case 1: first square is the computer, return last to make computer line less obvious to silly players
-        if (getText(first) === "X") {
+        if (dom.getText(first) === "X") {
             return last;
         }
         //Case 2: middle square or last square is the computer, return first
-        if ((getText(middle) === "X") | (getText(last) === "X")) {
+        if ((dom.getText(middle) === "X") | (dom.getText(last) === "X")) {
             return first;
         }
     };
@@ -207,47 +200,47 @@
         //Option 1: The player just made the first move
         if (firstMove) {
             //If player made their first move in the center, computer moves in the corner
-            if (getText(5) === p) {
-                setText(1, c);
+            if (dom.getText(5) === p) {
+                dom.setText(1, c);
             }
             //Otherwise, computer moves in the center
             else {
-                setText(5, c);
+                dom.setText(5, c);
             }
             firstMove = false;
         }
         //Option 2: Computer has two in a row and wins
         else if (computerWin) {
-            setText(computerWin, c);
+            dom.setText(computerWin, c);
             alert("You lost :(");
-            var total = Number(getText(c));
+            var total = Number(dom.getText(c));
             total += 1;
-            setText(c, total);
+            dom.setText(c, total);
             reset();
         }
         //Option 3: Opponent has two in a row, computer blocks
         else if (playerBlock) {
-            setText(playerBlock, c);
+            dom.setText(playerBlock, c);
         }
         //Option 4: Computer makes a fork
         else if (computerTempFork !== 0) {
-            setText(computerTempFork, c);
+            dom.setText(computerTempFork, c);
 
         }
         //Option 5: Computer blocks a fork if there is only one player fork possible
         else if (forkCount === 1) {
-            setText(playerTempFork, c);
+            dom.setText(playerTempFork, c);
 
         }
         //Option 6: Computer makes two in a row if player has two or more possible forks
         else if (forkCount > 1) {
             var goal = checkCombos(lines, possibleTwo, c);
-            setText(goal, c);
+            dom.setText(goal, c);
         }
         //Option 7: Computer makes any move (pretty sure this will never be reached)
         else {
             var square = randomMove();
-            setText(square, c);
+            dom.setText(square, c);
         }
         draw();
         turn = p;
@@ -256,7 +249,7 @@
 
     //Checks if a square is empty
     var spaceAvailable = function (n) {
-        if (getText(n) !== "") {
+        if (dom.getText(n) !== "") {
             if (((computer) && (turn !== "X")) || !computer) {
                 alert("Oops! That space is occupied");
             }
@@ -271,14 +264,14 @@
     //Checks a line for a win
     var win = function (p, squares) {
         for (i = 0; i < 3; i++) {
-            if (getText(squares[i]) !== p) {
+            if (dom.getText(squares[i]) !== p) {
                 return false;
             }
         }
         if (!computer) {
-            var total = Number(getText(p));
+            var total = Number(dom.getText(p));
             total += 1;
-            setText(p, total);
+            dom.setText(p, total);
             if (p === "X") {
                 p = player1;
             } else {
@@ -294,7 +287,7 @@
     //Checks for a draw
     var draw = function () {
         for (i = 1; i < 10; i++) {
-            if (getText(i) === '') {
+            if (dom.getText(i) === '') {
                 return;
             }
         }
