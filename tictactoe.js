@@ -1,6 +1,5 @@
 ;(function(exports) {
     var computer = false;
-    var firstMove = true;
     var lines = "123 456 789 147 258 369 159 357".split(' ');
     var forks = "79513 13579 39517 17539 24137 26319 68937 48719 48526 24568 26548 48524 37124 19326 37968 19748 38215 18235 94635 34695 27859 29835 61457 67541".split(' ');
     var computerTempFork = 0;
@@ -93,7 +92,6 @@
         for (i = 1; i < 10; i++) {
             dom.setText(i, "");
         }
-        firstMove = true;
     };
     //Called when a player makes a move. Determines who the current player is, sets the text of the square they clicked, checks for a win or a draw, and changes the turn label
     var move = function (n) {
@@ -215,7 +213,7 @@
         computerFork = checkCombos(forks, fork, c);
         playerFork = checkCombos(forks, fork, p);
         //Option 1: The player just made the first move
-        if (firstMove) {
+        if (board.moveCount() === 1) {
             //If player made their first move in the center, computer moves in the corner
             if (dom.getText(5) === p) {
                 dom.setText(1, c);
@@ -224,7 +222,6 @@
             else {
                 dom.setText(5, c);
             }
-            firstMove = false;
         }
         //Option 2: Computer has two in a row and wins
         else if (computerWin) {
