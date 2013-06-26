@@ -106,6 +106,71 @@ var checkCombos = function (array, func, p) {
     }
     return false;
 };
+//Returns the square that completes a winning line
+var two = function (p, squares) {
+    var first = squares[0];
+    var middle = squares[1];
+    var last = squares[2];
+    //If all three are full, can't block
+    if ((getText(first) && getText(middle) && getText(last)) !== "") {
+        return false;
+    }
+    //Case 1: first and middle square match, should use last
+    if ((getText(first) === p) && (getText(middle) === p)) {
+        return last;
+    }
+    //Case 2: middle and last square match, should use first
+    else if ((getText(middle) === p) && (getText(last) === p)) {
+        return first;
+    }
+    //Case 3: first and last square match, should use middle
+    else if ((getText(first) === p) && (getText(last) === p)) {
+        return middle;
+    }
+    return false;
+};
+//Finds possible forks, adds to the count of total forks found, and sets the computerTempFork or playerTempFork depending on who the current player is
+var fork = function (p, squares) {
+    var goal1 = getText(squares[0]);
+    var goal2 = getText(squares[1]);
+    var fork = squares[2];
+    var a = getText(squares[3]);
+    var b = getText(squares[4]);
+    //If goal wins or fork are empty, and a and b are right, a fork
+    if ((goal1 === "") && (goal2 === "") && (getText(fork) === "") && (a === p) && (b === p)) {
+        if (p === "O") {
+            forkCount += 1;
+        }
+        if (p === "X") {
+            computerTempFork = fork;
+        } else {
+            playerTempFork = fork;
+        }
+    }
+};
+//Returns a square that would make two in a row for the computer
+var possibleTwo = function (p, squares) {
+    var first = squares[0];
+    var middle = squares[1];
+    var last = squares[2];
+    //Case 1: first square is the computer, return last to make computer line less obvious to silly players
+    if (getText(first) === "X") {
+        return last;
+    }
+    //Case 2: middle square or last square is the computer, return first
+    if ((getText(middle) === "X") | (getText(last) === "X")) {
+        return first;
+    }
+};
+//Returns a random empty square
+var randomMove = function () {
+    var squareID = Math.floor((Math.random() * 9) + 1);
+    if (spaceAvailable(squareID)) {
+        return squareID;
+    } else {
+        return randomMove();
+    }
+};
 //Called after each player move when the AI is on. Checks for possible wins or forks, and moves accordingly.
 var computerMove = function () {
     var c = "X";
@@ -166,71 +231,8 @@ var computerMove = function () {
     draw();
     turn = p;
 };
-//Returns a random empty square
-var randomMove = function () {
-    var squareID = Math.floor((Math.random() * 9) + 1);
-    if (spaceAvailable(squareID)) {
-        return squareID;
-    } else {
-        return randomMove();
-    }
-};
-//Returns a square that would make two in a row for the computer
-var possibleTwo = function (p, squares) {
-    var first = squares[0];
-    var middle = squares[1];
-    var last = squares[2];
-    //Case 1: first square is the computer, return last to make computer line less obvious to silly players
-    if (getText(first) === "X") {
-        return last;
-    }
-    //Case 2: middle square or last square is the computer, return first
-    if ((getText(middle) === "X") | (getText(last) === "X")) {
-        return first;
-    }
-};
-//Returns the square that completes a winning line
-var two = function (p, squares) {
-    var first = squares[0];
-    var middle = squares[1];
-    var last = squares[2];
-    //If all three are full, can't block
-    if ((getText(first) && getText(middle) && getText(last)) !== "") {
-        return false;
-    }
-    //Case 1: first and middle square match, should use last
-    if ((getText(first) === p) && (getText(middle) === p)) {
-        return last;
-    }
-    //Case 2: middle and last square match, should use first
-    else if ((getText(middle) === p) && (getText(last) === p)) {
-        return first;
-    }
-    //Case 3: first and last square match, should use middle
-    else if ((getText(first) === p) && (getText(last) === p)) {
-        return middle;
-    }
-    return false;
-};
-//Finds possible forks, adds to the count of total forks found, and sets the computerTempFork or playerTempFork depending on who the current player is
-var fork = function (p, squares) {
-    var goal1 = getText(squares[0]);
-    var goal2 = getText(squares[1]);
-    var fork = squares[2];
-    var a = getText(squares[3]);
-    var b = getText(squares[4]);
-    //If goal wins or fork are empty, and a and b are right, a fork
-    if ((goal1 === "") && (goal2 === "") && (getText(fork) === "") && (a === p) && (b === p)) {
-        if (p === "O") {
-            forkCount += 1;
-        }
-        if (p === "X") {
-            computerTempFork = fork;
-        } else {
-            playerTempFork = fork;
-        }
-    }
-};
+
+
 //Checks if a square is empty
 var spaceAvailable = function (n) {
     if (getText(n) !== "") {
