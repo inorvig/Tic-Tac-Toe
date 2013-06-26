@@ -29,6 +29,23 @@
         }
     };
 
+    var board = {
+        squares: function() {
+            var squares = [];
+            for (i = 1; i < 10; i++) {
+                var square = dom.getText(i);
+                squares.push(square === "" ? undefined : square);
+            }
+            return squares;
+        },
+
+        moveCount: function() {
+            return this.squares().filter(function(x) {
+                return x !== undefined;
+            }).length;
+        }
+    };
+
     //Sets players to X and O if names are not provided, and otherwise sets player names
     var playerNames = function () {
         if (!player1) {
@@ -300,4 +317,5 @@
     exports.reset = reset;
     exports.computerOn = computerOn;
     exports.computerOff = computerOff;
+    exports.board = board;
 })(this);
