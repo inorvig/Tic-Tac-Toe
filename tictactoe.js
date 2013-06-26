@@ -5,16 +5,19 @@ var forks = "79513 13579 39517 17539 24137 26319 68937 48719 48526 24568 26548 4
 var computerTempFork = 0;
 var playerTempFork = 0;
 var forkCount = 0;
+var player1 = prompt("What's player 1's name?", "X");
+var player2 = prompt("What's player 2's name?", "O");
 
+//Returns the text of the element at the given html id
 var getText = function (id) {
     return document.getElementById(id).innerHTML;
 };
+//Sets the text of the element at the given html id
 var setText = function (id, text) {
     document.getElementById(id).innerHTML = text;
 };
 
-var player1 = prompt("What's player 1's name?", "X");
-var player2 = prompt("What's player 2's name?", "O");
+//Sets players to X and O if names are not provided, and otherwise sets player names
 var playerNames = function () {
     if (!player1) {
         player1 = "X";
@@ -29,6 +32,7 @@ var playerNames = function () {
 
 playerNames();
 
+//Turns on the AI, sets the text of the labels relating to turn and player names, and resets the game
 window.computerOn = function () {
     computer = true;
     setText('player1', "The computer");
@@ -41,6 +45,7 @@ window.computerOn = function () {
     document.getElementById("together").style.display = "inline";
     restart();
 };
+//Turns off the AI, sets the text of the labels relating to turn and player names, and resets the game
 window.computerOff = function () {
     computer = false;
     playerNames();
@@ -50,14 +55,16 @@ window.computerOff = function () {
     document.getElementById("turnlabel").style.display = "inline";
     document.getElementById("alone").style.display = "inline";
     document.getElementById("together").style.display = "none";
-    restart();
+    reset();
 };
-window.restart = function () {
+//Clears the board and sets the first move to be true
+window.reset = function () {
     for (i = 1; i < 10; i++) {
         setText(i, "");
     }
     firstMove = true;
 };
+//Called when a player makes a move. Determines who the current player is, sets the text of the square they clicked, checks for a win or a draw, and changes the turn label
 window.move = function (n) {
     var player = getText('turn');
     var turn = "X";
@@ -89,6 +96,7 @@ window.move = function (n) {
     }
 };
 
+//Used to check for two in a row and forks. Takes in an array, a function, and a player, calls the function on each element in the array with the player as a parameter, and returns the result of the function if a square is found, or returns false.
 var checkCombos = function (array, func, p) {
     for (var i in array) {
         var check = func(p, array[i]);
@@ -98,6 +106,7 @@ var checkCombos = function (array, func, p) {
     }
     return false;
 };
+//Called after each player move when the AI is on. Checks for possible wins or forks, and moves accordingly.
 var computerMove = function () {
     var c = "X";
     var p = "O";
@@ -109,8 +118,6 @@ var computerMove = function () {
     playerBlock = checkCombos(lines, two, p);
     computerFork = checkCombos(forks, fork, c);
     playerFork = checkCombos(forks, fork, p);
-
-    console.log("fork count is ", forkCount);
     //Option 1: The player just made the first move
     if (firstMove) {
         //If player made their first move in the center, computer moves in the corner
@@ -125,46 +132,41 @@ var computerMove = function () {
     }
     //Option 2: Computer has two in a row and wins
     else if (computerWin) {
-        console.log("2");
         setText(computerWin, c);
         alert("You lost :(");
         var total = Number(getText(c));
         total += 1;
         setText(c, total);
-        restart();
+        reset();
     }
     //Option 3: Opponent has two in a row, computer blocks
     else if (playerBlock) {
-        console.log("3");
         setText(playerBlock, c);
     }
     //Option 4: Computer makes a fork
     else if (computerTempFork !== 0) {
-        console.log("4");
         setText(computerTempFork, c);
 
     }
     //Option 5: Computer blocks a fork if there is only one player fork possible
     else if (forkCount === 1) {
-        console.log("5");
         setText(playerTempFork, c);
 
     }
     //Option 6: Computer makes two in a row if player has two or more possible forks
     else if (forkCount > 1) {
         var goal = checkCombos(lines, possibleTwo, c);
-        console.log("goal = ", goal);
         setText(goal, c);
     }
-    //Option 7: Computer makes any move
+    //Option 7: Computer makes any move (pretty sure this will never be reached)
     else {
-        console.log("6");
         var square = randomMove();
         setText(square, c);
     }
     draw();
     turn = p;
 };
+//Returns a random empty square
 var randomMove = function () {
     var squareID = Math.floor((Math.random() * 9) + 1);
     if (spaceAvailable(squareID)) {
@@ -173,11 +175,11 @@ var randomMove = function () {
         return randomMove();
     }
 };
+//Returns a square that would make two in a row for the computer
 var possibleTwo = function (p, squares) {
     var first = squares[0];
     var middle = squares[1];
     var last = squares[2];
-    console.log("first = ", getText(first), ", middle = ", getText(middle), ", last = ", getText(last));
     //Case 1: first square is the computer, return last to make computer line less obvious to silly players
     if (getText(first) === "X") {
         return last;
@@ -187,6 +189,7 @@ var possibleTwo = function (p, squares) {
         return first;
     }
 };
+//Returns the square that completes a winning line
 var two = function (p, squares) {
     var first = squares[0];
     var middle = squares[1];
@@ -209,6 +212,7 @@ var two = function (p, squares) {
     }
     return false;
 };
+//Finds possible forks, adds to the count of total forks found, and sets the computerTempFork or playerTempFork depending on who the current player is
 var fork = function (p, squares) {
     var goal1 = getText(squares[0]);
     var goal2 = getText(squares[1]);
@@ -217,8 +221,6 @@ var fork = function (p, squares) {
     var b = getText(squares[4]);
     //If goal wins or fork are empty, and a and b are right, a fork
     if ((goal1 === "") && (goal2 === "") && (getText(fork) === "") && (a === p) && (b === p)) {
-        console.log("goal 1 = ", squares[0], " goal 2 = ", squares[1], "fork = ", fork, "a = ", a, " b = ", b);
-        console.log("fork text = ", getText(fork));
         if (p === "O") {
             forkCount += 1;
         }
@@ -229,6 +231,7 @@ var fork = function (p, squares) {
         }
     }
 };
+//Checks if a square is empty
 var spaceAvailable = function (n) {
     if (getText(n) !== "") {
         if (((computer) && (turn !== "X")) || !computer) {
@@ -238,9 +241,11 @@ var spaceAvailable = function (n) {
     }
     return true;
 };
+//Checks the whole board for a win
 var winningMove = function (p) {
     return checkCombos(lines, win, p);
 };
+//Checks a line for a win
 var win = function (p, squares) {
     for (i = 0; i < 3; i++) {
         if (getText(squares[i]) !== p) {
@@ -260,9 +265,10 @@ var win = function (p, squares) {
         p = "You";
     }
     alert(p + " won!");
-    restart();
+    reset();
     return true;
 };
+//Checks for a draw
 var draw = function () {
     for (i = 1; i < 10; i++) {
         if (getText(i) === '') {
@@ -270,6 +276,6 @@ var draw = function () {
         }
     }
     alert("Cat's game!");
-    restart();
+    reset();
     return true;
 };
