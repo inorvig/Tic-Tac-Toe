@@ -1,4 +1,4 @@
-;(function() {
+;(function(exports) {
     var computer = false;
     var firstMove = true;
     var lines = "123 456 789 147 258 369 159 357".split(' ');
@@ -34,7 +34,7 @@
     playerNames();
 
     //Turns on the AI, sets the text of the labels relating to turn and player names, and resets the game
-    window.computerOn = function () {
+    var computerOn = function () {
         computer = true;
         setText('player1', "The computer");
         setText('player2', "You");
@@ -48,7 +48,7 @@
     };
 
     //Turns off the AI, sets the text of the labels relating to turn and player names, and resets the game
-    window.computerOff = function () {
+    var computerOff = function () {
         computer = false;
         playerNames();
         setText('tense', " has");
@@ -61,14 +61,14 @@
     };
 
     //Clears the board and sets the first move to be true
-    window.reset = function () {
+    var reset = function () {
         for (i = 1; i < 10; i++) {
             setText(i, "");
         }
         firstMove = true;
     };
     //Called when a player makes a move. Determines who the current player is, sets the text of the square they clicked, checks for a win or a draw, and changes the turn label
-    window.move = function (n) {
+    var move = function (n) {
         var player = getText('turn');
         var turn = "X";
         if ((player === player2) || (computer)) {
@@ -284,4 +284,9 @@
         reset();
         return true;
     };
-})();
+
+    exports.move = move;
+    exports.reset = reset;
+    exports.computerOn = computerOn;
+    exports.computerOff = computerOff;
+})(this);
