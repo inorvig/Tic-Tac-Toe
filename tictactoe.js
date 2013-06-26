@@ -16,6 +16,24 @@
     //Sets the text of the element at the given html id
     var setText = function (id, text) {
         document.getElementById(id).innerHTML = text;
+    var dom = {
+        //Returns the text of the element at the given html id
+        getText: function (id) {
+            return document.getElementById(id).innerHTML;
+        },
+
+        //Sets the text of the element at the given html id
+        setText: function (id, text) {
+            document.getElementById(id).innerHTML = text;
+        },
+
+        hide: function(id) {
+            document.getElementById(id).style.display = "none";
+        },
+
+        inline: function(id) {
+            document.getElementById(id).style.display = "inline";
+        }
     };
 
     //Sets players to X and O if names are not provided, and otherwise sets player names
