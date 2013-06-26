@@ -44,7 +44,7 @@
         document.getElementById("turnlabel").style.display = "none";
         document.getElementById("alone").style.display = "none";
         document.getElementById("together").style.display = "inline";
-        restart();
+        reset();
     };
 
     //Turns off the AI, sets the text of the labels relating to turn and player names, and resets the game
