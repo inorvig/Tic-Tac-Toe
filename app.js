@@ -6,6 +6,7 @@ var express = require('express')
   /* Express middleware */
 
   app.set('port', process.env.PORT || 3000);
+  app.set('views', __dirname + '/public');
   app.use(express.static('public'));
 
   /* Our lone route */
