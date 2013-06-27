@@ -45,6 +45,31 @@
         }
     };
 
+    var Scores = function() {
+        var scores = {};
+
+        var display = function() {
+            for (var i in scores) {
+                dom.setText(i, scores[i]);
+            }
+        };
+
+        this.reset = function() {
+            scores["X"] = 0;
+            scores["O"] = 0;
+            display();
+        };
+
+        this.increment = function(playerSymbol) {
+            scores[playerSymbol]++;
+            display();
+        };
+
+        this.reset();
+    };
+
+    var scores = new Scores();
+
     //Sets players to X and O if names are not provided, and otherwise sets player names
     var playerNames = function () {
         if (!player1) {
@@ -66,8 +91,7 @@
         dom.setText('player1', "The computer");
         dom.setText('player2', "You");
         dom.setText('tense', " have");
-        dom.setText('X', 0);
-        dom.setText('O', 0);
+        scores.reset();
         dom.hide("turnlabel");
         dom.hide("alone");
         dom.inline("together");
@@ -79,8 +103,7 @@
         computer = false;
         playerNames();
         dom.setText('tense', " has");
-        dom.setText('X', 0);
-        dom.setText('O', 0);
+        scores.reset();
         dom.inline("turnlabel");
         dom.inline("alone");
         dom.hide("together");
@@ -227,9 +250,7 @@
         else if (computerWin) {
             dom.setText(computerWin, c);
             alert("You lost :(");
-            var total = Number(dom.getText(c));
-            total += 1;
-            dom.setText(c, total);
+            scores.increment(c);
             reset();
         }
         //Option 3: Opponent has two in a row, computer blocks
@@ -283,9 +304,7 @@
             }
         }
         if (!computer) {
-            var total = Number(dom.getText(p));
-            total += 1;
-            dom.setText(p, total);
+            scores.increment(p);
             if (p === "X") {
                 p = player1;
             } else {
