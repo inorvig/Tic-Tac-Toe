@@ -53,14 +53,8 @@
         },
 
         //Checks if a square is empty
-        spaceAvailable: function (n) {
-            if (this.squares()[n] !== undefined) {
-                if (((computer) && (turn !== "X")) || !computer) {
-                    alert("Oops! That space is occupied");
-                }
-                return false;
-            }
-            return true;
+        isSpaceAvailable: function (n) {
+            return this.squares()[n] === undefined;
         },
 
         //Checks for a draw
