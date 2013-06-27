@@ -1,7 +1,8 @@
 ;(function(exports) {
     var computer = false;
-    var lines = "123 456 789 147 258 369 159 357".split(' ');
-    var forks = "79513 13579 39517 17539 24137 26319 68937 48719 48526 24568 26548 48524 37124 19326 37968 19748 38215 18235 94635 34695 27859 29835 61457 67541".split(' ');
+    var lines = "012 345 678 036 147 258 048 246".split(' ');
+    var forks = "68402 02468 28406 06428 13026 15208 57826 37608 37415 13457 15437 37413 26013 08215 26857 08637 27104 07124 83524 23584 16748 18724 50346 56430".split(' ');
+
     var computerTempFork = 0;
     var playerTempFork = 0;
     var forkCount = 0;
@@ -31,7 +32,7 @@
     var board = {
         squares: function() {
             var squares = [];
-            for (i = 1; i < 10; i++) {
+            for (i = 0; i < 9; i++) {
                 var square = dom.getText(i);
                 squares.push(square === "" ? undefined : square);
             }
@@ -46,14 +47,14 @@
 
         //Clears the board and sets the first move to be true
         reset: function () {
-            for (i = 1; i < 10; i++) {
+            for (i = 0; i < 9; i++) {
                 dom.setText(i, "");
             }
         },
 
         //Checks if a square is empty
         spaceAvailable: function (n) {
-            if (this.squares()[n - 1] !== undefined) {
+            if (this.squares()[n] !== undefined) {
                 if (((computer) && (turn !== "X")) || !computer) {
                     alert("Oops! That space is occupied");
                 }
@@ -228,7 +229,7 @@
     };
     //Returns a random empty square
     var randomMove = function () {
-        var squareID = Math.floor((Math.random() * 9) + 1);
+        var squareID = Math.floor(Math.random() * 9);
         if (board.spaceAvailable(squareID)) {
             return squareID;
         } else {
@@ -250,12 +251,12 @@
         //Option 1: The player just made the first move
         if (board.moveCount() === 1) {
             //If player made their first move in the center, computer moves in the corner
-            if (dom.getText(5) === p) {
-                dom.setText(1, c);
+            if (dom.getText(4) === p) {
+                dom.setText(0, c);
             }
             //Otherwise, computer moves in the center
             else {
-                dom.setText(5, c);
+                dom.setText(4, c);
             }
         }
         //Option 2: Computer has two in a row and wins
@@ -320,7 +321,7 @@
     };
     //Checks for a draw
     var draw = function () {
-        for (i = 1; i < 10; i++) {
+        for (i = 0; i < 9; i++) {
             if (dom.getText(i) === '') {
                 return;
             }
