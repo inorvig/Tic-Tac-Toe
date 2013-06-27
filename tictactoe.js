@@ -47,9 +47,9 @@
 
         //Clears the board and sets the first move to be true
         reset: function () {
-            for (i = 0; i < 9; i++) {
+            this.squares().forEach(function(_, i) {
                 dom.setText(i, "");
-            }
+            });
         },
 
         //Checks if a square is empty
