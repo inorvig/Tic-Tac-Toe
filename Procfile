@@ -1,1 +1,1 @@
-web: node tictactoe.js
+web: node app.js
