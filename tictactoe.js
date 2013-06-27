@@ -53,7 +53,7 @@
 
         //Checks if a square is empty
         spaceAvailable: function (n) {
-            if (dom.getText(n) !== "") {
+            if (this.squares()[n - 1] !== undefined) {
                 if (((computer) && (turn !== "X")) || !computer) {
                     alert("Oops! That space is occupied");
                 }
