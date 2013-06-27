@@ -12,7 +12,7 @@ var express = require('express')
   /* Our lone route */
 
   app.get('/', function(req, res) {
-    res.send('tictac_html');
+    res.sendfile(__dirname+'/tictac_html.html');
   });
 
   /* Let there be life! */
