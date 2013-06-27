@@ -162,6 +162,8 @@
                     dom.setText("turn", player1);
                 }
             }
+        } else { // space not available
+            alert("Oops! That space is occupied");
         }
     };
 
