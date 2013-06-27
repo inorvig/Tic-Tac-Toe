@@ -61,6 +61,16 @@
                 return false;
             }
             return true;
+        },
+
+        //Checks for a draw
+        draw: function () {
+            var isADraw = board.moveCount() === 9;
+            if (isADraw) {
+                alert("Cat's game!");
+                board.reset();
+            }
+            return isADraw;
         }
     };
 
@@ -146,7 +156,7 @@
                     dom.setText(n, "O");
                 }
             }
-            if (!(winningMove(turn) || draw())) {
+            if (!(winningMove(turn) || board.draw())) {
                 if (computer) {
                     computerMove();
                 }
@@ -290,7 +300,7 @@
             var square = randomMove();
             dom.setText(square, c);
         }
-        draw();
+        board.draw();
         turn = p;
     };
 
@@ -318,16 +328,6 @@
         alert(p + " won!");
         board.reset();
         return true;
-    };
-
-    //Checks for a draw
-    var draw = function () {
-        var isADraw = board.moveCount() === 9;
-        if (isADraw) {
-            alert("Cat's game!");
-            board.reset();
-        }
-        return isADraw;
     };
 
     exports.move = move;
