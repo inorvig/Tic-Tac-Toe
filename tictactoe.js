@@ -140,7 +140,7 @@
         if ((player === player2) || (computer)) {
             turn = "O";
         }
-        if (board.spaceAvailable(n)) {
+        if (board.isSpaceAvailable(n)) {
             if (computer) {
                 dom.setText(n, "O");
             } else {
@@ -236,7 +236,7 @@
     //Returns a random empty square
     var randomMove = function () {
         var squareID = Math.floor(Math.random() * 9);
-        if (board.spaceAvailable(squareID)) {
+        if (board.isSpaceAvailable(squareID)) {
             return squareID;
         } else {
             return randomMove();
