@@ -319,16 +319,15 @@
         board.reset();
         return true;
     };
+
     //Checks for a draw
     var draw = function () {
-        for (i = 0; i < 9; i++) {
-            if (dom.getText(i) === '') {
-                return;
-            }
+        var isADraw = board.moveCount() === 9;
+        if (isADraw) {
+            alert("Cat's game!");
+            board.reset();
         }
-        alert("Cat's game!");
-        board.reset();
-        return true;
+        return isADraw;
     };
 
     exports.move = move;
