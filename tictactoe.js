@@ -50,6 +50,17 @@
                 dom.setText(i, "");
             }
         },
+
+        //Checks if a square is empty
+        spaceAvailable: function (n) {
+            if (dom.getText(n) !== "") {
+                if (((computer) && (turn !== "X")) || !computer) {
+                    alert("Oops! That space is occupied");
+                }
+                return false;
+            }
+            return true;
+        }
     };
 
     var Scores = function() {
@@ -124,7 +135,7 @@
         if ((player === player2) || (computer)) {
             turn = "O";
         }
-        if (spaceAvailable(n)) {
+        if (board.spaceAvailable(n)) {
             if (computer) {
                 dom.setText(n, "O");
             } else {
@@ -218,7 +229,7 @@
     //Returns a random empty square
     var randomMove = function () {
         var squareID = Math.floor((Math.random() * 9) + 1);
-        if (spaceAvailable(squareID)) {
+        if (board.spaceAvailable(squareID)) {
             return squareID;
         } else {
             return randomMove();
@@ -282,17 +293,6 @@
         turn = p;
     };
 
-
-    //Checks if a square is empty
-    var spaceAvailable = function (n) {
-        if (dom.getText(n) !== "") {
-            if (((computer) && (turn !== "X")) || !computer) {
-                alert("Oops! That space is occupied");
-            }
-            return false;
-        }
-        return true;
-    };
     //Checks the whole board for a win
     var winningMove = function (p) {
         return checkCombos(lines, win, p);
