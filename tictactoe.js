@@ -42,7 +42,14 @@
             return this.squares().filter(function(x) {
                 return x !== undefined;
             }).length;
-        }
+        },
+
+        //Clears the board and sets the first move to be true
+        reset: function () {
+            for (i = 1; i < 10; i++) {
+                dom.setText(i, "");
+            }
+        },
     };
 
     var Scores = function() {
@@ -95,7 +102,7 @@
         dom.hide("turnlabel");
         dom.hide("alone");
         dom.inline("together");
-        reset();
+        board.reset();
     };
 
     //Turns off the AI, sets the text of the labels relating to turn and player names, and resets the game
@@ -107,15 +114,9 @@
         dom.inline("turnlabel");
         dom.inline("alone");
         dom.hide("together");
-        reset();
+        board.reset();
     };
 
-    //Clears the board and sets the first move to be true
-    var reset = function () {
-        for (i = 1; i < 10; i++) {
-            dom.setText(i, "");
-        }
-    };
     //Called when a player makes a move. Determines who the current player is, sets the text of the square they clicked, checks for a win or a draw, and changes the turn label
     var move = function (n) {
         var player = dom.getText('turn');
@@ -251,7 +252,7 @@
             dom.setText(computerWin, c);
             alert("You lost :(");
             scores.increment(c);
-            reset();
+            board.reset();
         }
         //Option 3: Opponent has two in a row, computer blocks
         else if (playerBlock) {
@@ -314,7 +315,7 @@
             p = "You";
         }
         alert(p + " won!");
-        reset();
+        board.reset();
         return true;
     };
     //Checks for a draw
@@ -325,12 +326,11 @@
             }
         }
         alert("Cat's game!");
-        reset();
+        board.reset();
         return true;
     };
 
     exports.move = move;
-    exports.reset = reset;
     exports.computerOn = computerOn;
     exports.computerOff = computerOff;
     exports.board = board;
