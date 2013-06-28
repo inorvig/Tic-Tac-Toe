@@ -196,6 +196,20 @@
         isGameOver: function() {
             return this.isDrawn() || this.isWon();
         },
+
+        gameOver: function() {
+            if (match.board.isDrawn()) {
+                alert("Cat's game!");
+            } else if (match.board.isWon()) {
+                var winner = this.isWinner(this.match.player1) ?
+                    this.match.player1 :
+                    this.match.player2;
+                this.match.scores.increment(winner);
+                alert(winner.salutation() + " won!");
+            }
+            this.reset();
+        },
+
         playMove: function(player, square) {
             dom.setText(square, player.id);
         },
@@ -237,23 +251,8 @@
             return this.moveCount() === 9;
         },
 
-        //Checks for a draw
-        gameDrawn: function () {
-            alert("Cat's game!");
-            this.reset();
-        },
-
         isWon: function() {
             return this.isWinner(this.match.player1) || this.isWinner(this.match.player2);
-        },
-
-        gameWon: function() {
-            var winner = this.isWinner(this.match.player1) ?
-                this.match.player1 :
-                this.match.player2;
-            match.scores.increment(winner);
-            alert(winner.salutation() + " won!");
-            match.board.reset();
         },
 
         isWinner: function(player) {
