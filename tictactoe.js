@@ -184,9 +184,9 @@
     };
 
     //Used to check for two in a row and forks. Takes in an array, a function, and a player, calls the function on each element in the array with the player as a parameter, and returns the result of the function if a square is found, or returns false.
-    var checkCombos = function (array, func, p) {
+    var checkCombos = function (array, func, player) {
         for (var i in array) {
-            var check = func(p, array[i]);
+            var check = func(player, array[i]);
             if (check) {
                 return (check);
             }
