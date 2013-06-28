@@ -320,8 +320,8 @@
     };
 
     //Checks the whole board for a win
-    var winningMove = function (p) {
-        return checkCombos(lines, win, p);
+    var winningMove = function (player) {
+        return checkCombos(lines, win, player);
     };
     //Checks a line for a win
     var win = function (p, squares) {
