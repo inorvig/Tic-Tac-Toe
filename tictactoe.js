@@ -268,54 +268,54 @@
         var c = "X";
         var p = "O";
         turn = c;
+        var computerPlayer = game.board.currentPlayer;
+        var otherPlayer = game.otherPlayer(game.board.currentPlayer);
         computerTempFork = 0;
         playerTempFork = 0;
         forkCount = 0;
-        computerWin = checkCombos(lines, two, c);
-        playerBlock = checkCombos(lines, two, p);
-        computerFork = checkCombos(forks, fork, c);
-        playerFork = checkCombos(forks, fork, p);
+        computerWin = checkCombos(lines, two, computerPlayer);
+        playerBlock = checkCombos(lines, two, otherPlayer);
+        computerFork = checkCombos(forks, fork, computerPlayer);
+        playerFork = checkCombos(forks, fork, otherPlayer);
         //Option 1: The player just made the first move
         if (game.board.moveCount() === 1) {
             //If player made their first move in the center, computer moves in the corner
-            if (dom.getText(4) === p) {
-                dom.setText(0, c);
+            if (dom.getText(4) === otherPlayer.id) {
+                dom.setText(0, computerPlayer.id);
             }
             //Otherwise, computer moves in the center
             else {
-                dom.setText(4, c);
+                dom.setText(4, computerPlayer.id);
             }
         }
         //Option 2: Computer has two in a row and wins
         else if (computerWin) {
-            dom.setText(computerWin, c);
+            dom.setText(computerWin, computerPlayer.id);
             alert("You lost :(");
             scores.increment(computerPlayer);
             game.board.reset();
         }
         //Option 3: Opponent has two in a row, computer blocks
         else if (playerBlock) {
-            dom.setText(playerBlock, c);
+            dom.setText(playerBlock, computerPlayer.id);
         }
         //Option 4: Computer makes a fork
         else if (computerTempFork !== 0) {
-            dom.setText(computerTempFork, c);
-
+            dom.setText(computerTempFork, computerPlayer.id);
         }
         //Option 5: Computer blocks a fork if there is only one player fork possible
         else if (forkCount === 1) {
-            dom.setText(playerTempFork, c);
-
+            dom.setText(playerTempFork, computerPlayer.id);
         }
         //Option 6: Computer makes two in a row if player has two or more possible forks
         else if (forkCount > 1) {
-            var goal = checkCombos(lines, possibleTwo, c);
-            dom.setText(goal, c);
+            var goal = checkCombos(lines, possibleTwo, computerPlayer);
+            dom.setText(goal, computerPlayer.id);
         }
         //Option 7: Computer makes any move (pretty sure this will never be reached)
         else {
             var square = randomMove();
-            dom.setText(square, c);
+            dom.setText(square, computerPlayer.id);
         }
         turn = p;
         game.board.draw();
