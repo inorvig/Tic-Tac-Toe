@@ -252,7 +252,7 @@
     //Returns a random empty square
     var randomMove = function () {
         var squareID = Math.floor(Math.random() * 9);
-        if (board.isSpaceAvailable(squareID)) {
+        if (game.board.isSpaceAvailable(squareID)) {
             return squareID;
         } else {
             return randomMove();
@@ -271,7 +271,7 @@
         computerFork = checkCombos(forks, fork, c);
         playerFork = checkCombos(forks, fork, p);
         //Option 1: The player just made the first move
-        if (board.moveCount() === 1) {
+        if (game.board.moveCount() === 1) {
             //If player made their first move in the center, computer moves in the corner
             if (dom.getText(4) === p) {
                 dom.setText(0, c);
@@ -285,8 +285,8 @@
         else if (computerWin) {
             dom.setText(computerWin, c);
             alert("You lost :(");
-            board.reset();
             scores.increment(computerPlayer);
+            game.board.reset();
         }
         //Option 3: Opponent has two in a row, computer blocks
         else if (playerBlock) {
@@ -312,8 +312,8 @@
             var square = randomMove();
             dom.setText(square, c);
         }
-        board.draw();
         turn = p;
+        game.board.draw();
     };
 
     //Checks the whole board for a win
@@ -338,7 +338,7 @@
             p = "You";
         }
         alert(p + " won!");
-        board.reset();
+        game.board.reset();
         return true;
     };
 
