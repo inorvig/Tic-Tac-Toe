@@ -194,7 +194,7 @@
         return false;
     };
     //Returns the square that completes a winning line
-    var two = function (p, squares) {
+    var two = function (player, squares) {
         var first = squares[0];
         var middle = squares[1];
         var last = squares[2];
@@ -203,15 +203,15 @@
             return false;
         }
         //Case 1: first and middle square match, should use last
-        if ((dom.getText(first) === p) && (dom.getText(middle) === p)) {
+        if ((dom.getText(first) === player.id) && (dom.getText(middle) === player.id)) {
             return last;
         }
         //Case 2: middle and last square match, should use first
-        else if ((dom.getText(middle) === p) && (dom.getText(last) === p)) {
+        else if ((dom.getText(middle) === player.id) && (dom.getText(last) === player.id)) {
             return first;
         }
         //Case 3: first and last square match, should use middle
-        else if ((dom.getText(first) === p) && (dom.getText(last) === p)) {
+        else if ((dom.getText(first) === player.id) && (dom.getText(last) === player.id)) {
             return middle;
         }
         return false;
