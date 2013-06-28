@@ -338,9 +338,7 @@
         //Option 2: Computer has two in a row and wins
         else if (computerWin) {
             dom.setText(computerWin, computerPlayer.id);
-            alert("You lost :(");
-            scores.increment(computerPlayer);
-            match.board.reset();
+            match.board.gameWon();
         }
         //Option 3: Opponent has two in a row, computer blocks
         else if (playerBlock) {
