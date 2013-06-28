@@ -1,5 +1,5 @@
 ;(function(exports) {
-    var game;
+    var match;
     var computer = false;
     var lines = "012 345 678 036 147 258 048 246".split(' ');
     var forks = "68402 02468 28406 06428 13026 15208 57826 37608 37415 13457 15437 37413 26013 08215 26857 08637 27104 07124 83524 23584 16748 18724 50346 56430".split(' ');
@@ -53,8 +53,8 @@
         }
     };
 
-    var Board = function(game, firstPlayer) {
-        this.game = game;
+    var Board = function(match, firstPlayer) {
+        this.match = match;
         this.setCurrentPlayer(firstPlayer);
     };
 
@@ -102,20 +102,20 @@
         },
 
         isWon: function() {
-            return this.isWinner(this.game.player1) || this.isWinner(this.game.player2);
+            return this.isWinner(this.match.player1) || this.isWinner(this.match.player2);
         },
 
         gameWon: function() {
-            var winner = this.isWinner(this.game.player1) ?
-                this.game.player1 :
-                this.game.player2;
+            var winner = this.isWinner(this.match.player1) ?
+                this.match.player1 :
+                this.match.player2;
 
             if (!computer) { ////////////////////////////////////
                 scores.increment(winner);
             }
 
             alert(winner.salutation() + " won!");
-            game.board.reset();
+            match.board.reset();
         },
 
         isWinner: function(player) {
@@ -135,7 +135,7 @@
 
 
 
-    function Game(player1Brain, player2Brain) {
+    function Match(player1Brain, player2Brain) {
         this.player1 = new Player(1, "X", player1Brain);
         this.player2 = new Player(2, "O", player2Brain);
 
@@ -150,13 +150,13 @@
         this.board = new Board(this, this.player1);
     };
 
-    Game.prototype = {
+    Match.prototype = {
         otherPlayer: function(player) {
             return player === this.player1 ? this.player2 : this.player1;
         },
     };
 
-    var game = new Game(Player.HUMAN, Player.HUMAN);
+    var match = new Match(Player.HUMAN, Player.HUMAN);
 
     var Scores = function() {
         var scores = {};
@@ -185,7 +185,7 @@
 
     //Turns on the AI, sets the text of the labels relating to turn and player names, and resets the game
     var computerOn = function () {
-        game = new Game(Player.HUMAN, Player.COMPUTER);
+        match = new Match(Player.HUMAN, Player.COMPUTER);
         computer = true;
         dom.setText('tense', " have");
         scores.reset();
@@ -196,7 +196,7 @@
 
     //Turns off the AI, sets the text of the labels relating to turn and player names, and resets the game
     var computerOff = function () {
-        game = new Game(Player.HUMAN, Player.HUMAN);
+        match = new Match(Player.HUMAN, Player.HUMAN);
         computer = false;
         dom.setText('tense', " has");
         dom.inline("turnlabel");
@@ -206,14 +206,14 @@
 
     //Called when a player makes a move. Determines who the current player is, sets the text of the square they clicked, checks for a win or a draw, and changes the turn label
     var move = function (n) {
-        var mover = game.board.currentPlayer;
-        if (game.board.isSpaceAvailable(n)) {
+        var mover = match.board.currentPlayer;
+        if (match.board.isSpaceAvailable(n)) {
             dom.setText(n, mover.id);
-            game.board.setCurrentPlayer(game.otherPlayer(game.board.currentPlayer));
-            if (game.board.isDrawn()) {
-                game.board.gameDrawn();
-            } else if (game.board.isWon()) {
-                game.board.gameWon();
+            match.board.setCurrentPlayer(match.otherPlayer(match.board.currentPlayer));
+            if (match.board.isDrawn()) {
+                match.board.gameDrawn();
+            } else if (match.board.isWon()) {
+                match.board.gameWon();
             } else {
                 if (computer) {
                     computerMove();
@@ -293,7 +293,7 @@
     //Returns a random empty square
     var randomMove = function () {
         var squareID = Math.floor(Math.random() * 9);
-        if (game.board.isSpaceAvailable(squareID)) {
+        if (match.board.isSpaceAvailable(squareID)) {
             return squareID;
         } else {
             return randomMove();
@@ -301,8 +301,8 @@
     };
     //Called after each player move when the AI is on. Checks for possible wins or forks, and moves accordingly.
     var computerMove = function () {
-        var computerPlayer = game.board.currentPlayer;
-        var otherPlayer = game.otherPlayer(game.board.currentPlayer);
+        var computerPlayer = match.board.currentPlayer;
+        var otherPlayer = match.otherPlayer(match.board.currentPlayer);
         computerTempFork = 0;
         playerTempFork = 0;
         forkCount = 0;
@@ -311,7 +311,7 @@
         computerFork = checkCombos(forks, fork, computerPlayer);
         playerFork = checkCombos(forks, fork, otherPlayer);
         //Option 1: The player just made the first move
-        if (game.board.moveCount() === 1) {
+        if (match.board.moveCount() === 1) {
             //If player made their first move in the center, computer moves in the corner
             if (dom.getText(4) === otherPlayer.id) {
                 dom.setText(0, computerPlayer.id);
@@ -326,7 +326,7 @@
             dom.setText(computerWin, computerPlayer.id);
             alert("You lost :(");
             scores.increment(computerPlayer);
-            game.board.reset();
+            match.board.reset();
         }
         //Option 3: Opponent has two in a row, computer blocks
         else if (playerBlock) {
@@ -351,15 +351,15 @@
             dom.setText(square, computerPlayer.id);
         }
 
-        if (game.board.isDrawn()) {
-            game.board.gameDrawn();
+        if (match.board.isDrawn()) {
+            match.board.gameDrawn();
         } else {
-            game.board.setCurrentPlayer(game.otherPlayer(game.board.currentPlayer));
+            match.board.setCurrentPlayer(match.otherPlayer(match.board.currentPlayer));
         }
     };
 
     exports.move = move;
-    exports.game = game;
+    exports.match = match;
     exports.computerOn = computerOn;
     exports.computerOff = computerOff;
 })(this);
