@@ -220,6 +220,23 @@
         }
     };
 
+    var Scores = function() {
+        var scores = { "X": 0, "O": 0 };
+
+        var display = function() {
+            for (var i in scores) {
+                dom.setText(i, scores[i]);
+            }
+        };
+
+        this.increment = function(player) {
+            scores[player.id]++;
+            display();
+        };
+
+        display();
+    };
+
     function Match(player1Brain, player2Brain) {
         this.player1 = new Player(1, "X", player1Brain);
         this.player2 = new Player(2, "O", player2Brain);
@@ -243,28 +260,6 @@
 
     var match = new Match(Player.HUMAN, Player.HUMAN);
 
-    var Scores = function() {
-        var scores = {};
-
-        var display = function() {
-            for (var i in scores) {
-                dom.setText(i, scores[i]);
-            }
-        };
-
-        this.reset = function() {
-            scores["X"] = 0;
-            scores["O"] = 0;
-            display();
-        };
-
-        this.increment = function(player) {
-            scores[player.id]++;
-            display();
-        };
-
-        this.reset();
-    };
 
     var scores = new Scores();
 
@@ -273,7 +268,6 @@
         match = new Match(Player.HUMAN, Player.COMPUTER);
         computer = true;
         dom.setText('tense', " have");
-        scores.reset();
         dom.hide("turnlabel");
         dom.hide("alone");
         dom.inline("together");
