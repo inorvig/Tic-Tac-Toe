@@ -99,6 +99,37 @@
         gameDrawn: function () {
             alert("Cat's game!");
             this.reset();
+        },
+
+        isWon: function() {
+            return this.isWinner(this.game.player1) || this.isWinner(this.game.player2);
+        },
+
+        gameWon: function() {
+            var winner = this.isWinner(this.game.player1) ?
+                this.game.player1 :
+                this.game.player2;
+
+            if (!computer) { ////////////////////////////////////
+                scores.increment(winner);
+            }
+
+            alert(winner.salutation() + " won!");
+            game.board.reset();
+        },
+
+        isWinner: function(player) {
+            return checkCombos(lines, this.winWithRow, player);
+        },
+
+        //Checks a line for a win
+        winWithRow: function (player, squares) {
+            for (i = 0; i < 3; i++) {
+                if (dom.getText(squares[i]) !== player.id) {
+                    return false;
+                }
+            }
+            return true;
         }
     };
 
@@ -323,26 +354,6 @@
         } else {
             game.board.setCurrentPlayer(game.otherPlayer(game.board.currentPlayer));
         }
-    };
-
-    //Checks the whole board for a win
-    var winningMove = function (player) {
-        return checkCombos(lines, win, player);
-    };
-    //Checks a line for a win
-    var win = function (player, squares) {
-        for (i = 0; i < 3; i++) {
-            if (dom.getText(squares[i]) !== player.id) {
-                return false;
-            }
-        }
-        if (!computer) {
-            scores.increment(player); ////////////// fix this stuff -- reassignment of p
-        }
-
-        alert(player.salutation() + " won!");
-        game.board.reset();
-        return true;
     };
 
     exports.move = move;
