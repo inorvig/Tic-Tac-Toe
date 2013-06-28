@@ -1,4 +1,5 @@
 ;(function(exports) {
+    var game;
     var computer = false;
     var lines = "012 345 678 036 147 258 048 246".split(' ');
     var forks = "68402 02468 28406 06428 13026 15208 57826 37608 37415 13457 15437 37413 26013 08215 26857 08637 27104 07124 83524 23584 16748 18724 50346 56430".split(' ');
@@ -109,6 +110,9 @@
             return player === this.player1 ? this.player2 : this.player1;
         },
     };
+
+    var game = new Game(Player.HUMAN, Player.HUMAN);
+
     var Scores = function() {
         var scores = {};
 
