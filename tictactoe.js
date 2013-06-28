@@ -324,23 +324,23 @@
         return checkCombos(lines, win, player);
     };
     //Checks a line for a win
-    var win = function (p, squares) {
+    var win = function (player, squares) {
         for (i = 0; i < 3; i++) {
-            if (dom.getText(squares[i]) !== p) {
+            if (dom.getText(squares[i]) !== player.id) {
                 return false;
             }
         }
         if (!computer) {
-            if (p === "X") {
-                p = player1;
             scores.increment(player); ////////////// fix this stuff -- reassignment of p
+            if (player.id === "X") {
+                player = game.player1.id;
             } else {
-                p = player2;
+                player = game.player2.id;
             }
         } else {
-            p = "You";
+            player = "You";
         }
-        alert(p + " won!");
+        alert(player + " won!");
         game.board.reset();
         return true;
     };
