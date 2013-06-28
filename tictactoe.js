@@ -323,7 +323,7 @@
 
     var match = new Match(Player.HUMAN, Player.HUMAN);
 
-    //Turns on the AI, sets the text of the labels relating to turn and player names, and resets the game
+    // sets up a human vs player game
     var computerOn = function () {
         match = new Match(Player.HUMAN, Player.COMPUTER);
         dom.setText('tense', " have");
@@ -332,7 +332,7 @@
         dom.inline("together");
     };
 
-    //Turns off the AI, sets the text of the labels relating to turn and player names, and resets the game
+    // sets up a human vs human game
     var computerOff = function () {
         match = new Match(Player.HUMAN, Player.HUMAN);
         dom.setText('tense', " has");
