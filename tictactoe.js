@@ -254,11 +254,11 @@
         },
 
         isWinner: function(player) {
-            return ai.checkCombos(LINES, this.winWithRow, player);
+            return ai.checkCombos(LINES, this.isWinWithRow, player);
         },
 
         //Checks a line for a win
-        winWithRow: function (player, squares) {
+        isWinWithRow: function (player, squares) {
             for (i = 0; i < 3; i++) {
                 if (dom.getText(squares[i]) !== player.id) {
                     return false;
