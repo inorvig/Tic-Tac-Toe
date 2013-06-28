@@ -136,8 +136,8 @@
             display();
         };
 
-        this.increment = function(playerSymbol) {
-            scores[playerSymbol]++;
+        this.increment = function(player) {
+            scores[player.id]++;
             display();
         };
 
@@ -303,8 +303,8 @@
         else if (computerWin) {
             dom.setText(computerWin, c);
             alert("You lost :(");
-            scores.increment(c);
             board.reset();
+            scores.increment(computerPlayer);
         }
         //Option 3: Opponent has two in a row, computer blocks
         else if (playerBlock) {
@@ -346,9 +346,9 @@
             }
         }
         if (!computer) {
-            scores.increment(p);
             if (p === "X") {
                 p = player1;
+            scores.increment(player); ////////////// fix this stuff -- reassignment of p
             } else {
                 p = player2;
             }
