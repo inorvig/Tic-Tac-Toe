@@ -336,10 +336,8 @@
         if (match.board.isSpaceAvailable(n)) {
             match.board.playMove(mover, n);
             match.board.setCurrentPlayer(nextMover);
-            if (match.board.isDrawn()) {
-                match.board.gameDrawn();
-            } else if (match.board.isWon()) {
-                match.board.gameWon();
+            if (match.board.isGameOver()) {
+                match.board.gameOver();
             } else if (nextMover.brain === Player.COMPUTER) {
                 computerMove();
             }
@@ -353,10 +351,8 @@
         var computerPlayer = match.board.currentPlayer;
         var otherPlayer = match.otherPlayer(match.board.currentPlayer);
         match.board.playMove(computerPlayer, ai.getMove(computerPlayer, otherPlayer));
-        if (match.board.isDrawn()) {
-            match.board.gameDrawn();
-        } else if (match.board.isWon()) {
-            match.board.gameWon();
+        if (match.board.isGameOver()) {
+            match.board.gameOver();
         } else {
             match.board.setCurrentPlayer(match.otherPlayer(match.board.currentPlayer));
         }
