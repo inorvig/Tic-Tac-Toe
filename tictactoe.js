@@ -56,15 +56,15 @@
                 return playerBlock;
             }
             //Option 4: Computer makes a fork
-            else if (computerTempFork !== 0) {
-                return computerTempFork;
+            else if (computerFork) {
+                return computerFork;
             }
             //Option 5: Computer blocks a fork if there is only one player fork possible
-            else if (forkCount === 1) {
-                return playerTempFork;
+            else if (playerFork) {
+                return playerFork;
             }
             //Option 6: Computer makes two in a row if player has two or more possible forks
-            else if (forkCount > 1) {
+            else if (computerFork && playerFork) {
                 return this.checkCombos(lines, this.possibleTwo, computerPlayer)
             }
             //Option 7: Computer makes any move
