@@ -149,6 +149,10 @@
     };
 
     Board.prototype = {
+        playMove: function(player, square) {
+            dom.setText(square, player.id);
+        },
+
         setCurrentPlayer: function(player) {
             this.currentPlayer = player;
             dom.setText('turn', player.salutation());
