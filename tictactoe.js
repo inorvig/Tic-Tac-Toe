@@ -285,17 +285,16 @@
     //Called when a player makes a move. Determines who the current player is, sets the text of the square they clicked, checks for a win or a draw, and changes the turn label
     var move = function (n) {
         var mover = match.board.currentPlayer;
+        var nextMover = match.otherPlayer(match.board.currentPlayer);
         if (match.board.isSpaceAvailable(n)) {
             dom.setText(n, mover.id);
-            match.board.setCurrentPlayer(match.otherPlayer(match.board.currentPlayer));
+            match.board.setCurrentPlayer(nextMover);
             if (match.board.isDrawn()) {
                 match.board.gameDrawn();
             } else if (match.board.isWon()) {
                 match.board.gameWon();
-            } else {
-                if (computer) { ///////////////////////
-                    computerMove();
-                }
+            } else if (nextMover.brain === Player.COMPUTER) {
+                computerMove();
             }
         } else { // space not available
             alert("Oops! That space is occupied");
