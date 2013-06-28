@@ -106,8 +106,7 @@
             return false;
         },
 
-        //Finds possible forks, adds to the count of total forks found, and sets
-        //the computerTempFork or playerTempFork depending on who the current player is
+        // finds possible forks
         fork: function (player, squares) {
             var goal1 = dom.getText(squares[0]);
             var goal2 = dom.getText(squares[1]);
