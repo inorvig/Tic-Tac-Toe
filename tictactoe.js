@@ -200,11 +200,7 @@
             var winner = this.isWinner(this.match.player1) ?
                 this.match.player1 :
                 this.match.player2;
-
-            if (!computer) { ////////////////////////////////////
-                scores.increment(winner);
-            }
-
+            scores.increment(winner);
             alert(winner.salutation() + " won!");
             match.board.reset();
         },
