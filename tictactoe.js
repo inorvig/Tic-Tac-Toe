@@ -124,14 +124,7 @@
             //If goal wins or fork are empty, and a and b are right, a fork
             if ((goal1 === "") && (goal2 === "") && (dom.getText(fork) === "") &&
                 (a === player.id) && (b === player.id)) {
-                if (player.id === "O") {
-                    forkCount += 1;
-                }
-                if (player.id === "X") {
-                    computerTempFork = fork;
-                } else {
-                    playerTempFork = fork;
-                }
+                return fork;
             }
         },
 
