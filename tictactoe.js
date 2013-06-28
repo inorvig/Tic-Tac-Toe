@@ -146,7 +146,7 @@
 
     var Board = function(match, firstPlayer) {
         this.match = match;
-        this.setCurrentPlayer(firstPlayer);
+        this.reset();
     };
 
     Board.prototype = {
@@ -170,8 +170,9 @@
             }).length;
         },
 
-        //Clears the board and sets the first move to be true
+        //Clears the board and sets the currentPlayer to player1
         reset: function () {
+            this.setCurrentPlayer(this.match.player1);
             this.squares().forEach(function(_, i) {
                 dom.setText(i, "");
             });
