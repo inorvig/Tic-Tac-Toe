@@ -101,6 +101,9 @@
                 this.reset();
             }
             return isADraw;
+        gameDrawn: function () {
+            alert("Cat's game!");
+            this.reset();
         }
     };
 
