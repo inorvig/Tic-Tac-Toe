@@ -1,6 +1,5 @@
 ;(function(exports) {
     var match;
-    var computer = false;
     var lines = "012 345 678 036 147 258 048 246".split(' ');
     var forks = "68402 02468 28406 06428 13026 15208 57826 37608 37415 13457 15437 37413 26013 08215 26857 08637 27104 07124 83524 23584 16748 18724 50346 56430".split(' ');
 
@@ -265,7 +264,6 @@
     //Turns on the AI, sets the text of the labels relating to turn and player names, and resets the game
     var computerOn = function () {
         match = new Match(Player.HUMAN, Player.COMPUTER);
-        computer = true;
         dom.setText('tense', " have");
         dom.hide("turnlabel");
         dom.hide("alone");
@@ -275,7 +273,6 @@
     //Turns off the AI, sets the text of the labels relating to turn and player names, and resets the game
     var computerOff = function () {
         match = new Match(Player.HUMAN, Player.HUMAN);
-        computer = false;
         dom.setText('tense', " has");
         dom.inline("turnlabel");
         dom.inline("alone");
