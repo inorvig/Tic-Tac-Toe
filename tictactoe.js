@@ -28,6 +28,51 @@
     };
 
     var ai = {
+        getMove: function(computerPlayer, otherPlayer) {
+            computerTempFork = 0;
+            playerTempFork = 0;
+            forkCount = 0;
+            computerWin = ai.checkCombos(lines, ai.two, computerPlayer);
+            playerBlock = ai.checkCombos(lines, ai.two, otherPlayer);
+            computerFork = ai.checkCombos(forks, ai.fork, computerPlayer);
+            playerFork = ai.checkCombos(forks, ai.fork, otherPlayer);
+            //Option 1: The player just made the first move
+            if (match.board.moveCount() === 1) {
+                //If player made their first move in the center, computer moves in the corner
+                if (dom.getText(4) === otherPlayer.id) {
+                    return 0;
+                }
+                //Otherwise, computer moves in the center
+                else {
+                    return 4;
+                }
+            }
+            //Option 2: Computer has two in a row and wins
+            else if (computerWin) {
+                return computerWin;
+            }
+            //Option 3: Opponent has two in a row, computer blocks
+            else if (playerBlock) {
+                return playerBlock;
+            }
+            //Option 4: Computer makes a fork
+            else if (computerTempFork !== 0) {
+                return computerTempFork;
+            }
+            //Option 5: Computer blocks a fork if there is only one player fork possible
+            else if (forkCount === 1) {
+                return playerTempFork;
+            }
+            //Option 6: Computer makes two in a row if player has two or more possible forks
+            else if (forkCount > 1) {
+                return ai.checkCombos(lines, ai.possibleTwo, computerPlayer)
+            }
+            //Option 7: Computer makes any move
+            else {
+                return ai.randomMove();
+            }
+        },
+
         //Used to check for two in a row and forks. Takes in an array,
         //a function, and a player, calls the function on each element
         //in the array with the player as a parameter, and returns the
@@ -305,51 +350,7 @@
     var computerMove = function () {
         var computerPlayer = match.board.currentPlayer;
         var otherPlayer = match.otherPlayer(match.board.currentPlayer);
-        computerTempFork = 0;
-        playerTempFork = 0;
-        forkCount = 0;
-        computerWin = ai.checkCombos(lines, ai.two, computerPlayer);
-        playerBlock = ai.checkCombos(lines, ai.two, otherPlayer);
-        computerFork = ai.checkCombos(forks, ai.fork, computerPlayer);
-        playerFork = ai.checkCombos(forks, ai.fork, otherPlayer);
-        //Option 1: The player just made the first move
-        if (match.board.moveCount() === 1) {
-            //If player made their first move in the center, computer moves in the corner
-            if (dom.getText(4) === otherPlayer.id) {
-                match.board.playMove(computerPlayer, 0);
-            }
-            //Otherwise, computer moves in the center
-            else {
-                match.board.playMove(computerPlayer, 4);
-            }
-        }
-        //Option 2: Computer has two in a row and wins
-        else if (computerWin) {
-            match.board.playMove(computerPlayer, computerWin);
-        }
-        //Option 3: Opponent has two in a row, computer blocks
-        else if (playerBlock) {
-            dom.setText(playerBlock, computerPlayer.id);
-            match.board.playMove(computerPlayer, playerBlock);
-        }
-        //Option 4: Computer makes a fork
-        else if (computerTempFork !== 0) {
-            match.board.playMove(computerPlayer, computerTempFork);
-        }
-        //Option 5: Computer blocks a fork if there is only one player fork possible
-        else if (forkCount === 1) {
-            match.board.playMove(computerPlayer, playerTempFork);
-        }
-        //Option 6: Computer makes two in a row if player has two or more possible forks
-        else if (forkCount > 1) {
-            match.board.playMove(computerPlayer,
-                                 ai.checkCombos(lines, ai.possibleTwo, computerPlayer));
-        }
-        //Option 7: Computer makes any move
-        else {
-            match.board.playMove(computerPlayer, ai.randomMove());
-        }
-
+        match.board.playMove(computerPlayer, ai.getMove(computerPlayer, otherPlayer));
         if (match.board.isDrawn()) {
             match.board.gameDrawn();
         } else if (match.board.isWon()) {
