@@ -236,7 +236,7 @@
         }
     };
     //Returns a square that would make two in a row for the computer
-    var possibleTwo = function (p, squares) {
+    var possibleTwo = function (_, squares) {
         var first = squares[0];
         var middle = squares[1];
         var last = squares[2];
