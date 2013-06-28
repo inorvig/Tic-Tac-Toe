@@ -58,6 +58,11 @@
     };
 
     Board.prototype = {
+        setCurrentPlayer: function(player) {
+            this.currentPlayer = player;
+            dom.setText('turn', player.salutation());
+        },
+
         squares: function() {
             var squares = [];
             for (i = 0; i < 9; i++) {
