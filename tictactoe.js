@@ -118,9 +118,8 @@
         }
     };
 
-    var Player = function(number, id, brain) {
+    var Player = function(id, brain) {
         this.id = id;
-        this.number = number;
         this.brain = brain;
     };
 
@@ -130,11 +129,11 @@
     Player.prototype = {
         setName: function(name) {
             this.name = name;
-            dom.setText('player' + this.number, this.salutation());
+            dom.setText('player' + this.id, this.salutation());
         },
 
         setNameFromPrompt: function() {
-            this.setName(prompt("What's player " + this.number + "'s name?",
+            this.setName(prompt("What's " + this.id + "'s name?",
                                 this.id));
         },
 
@@ -242,8 +241,8 @@
     };
 
     function Match(player1Brain, player2Brain) {
-        this.player1 = new Player(1, "X", player1Brain);
-        this.player2 = new Player(2, "O", player2Brain);
+        this.player1 = new Player("X", player1Brain);
+        this.player2 = new Player("O", player2Brain);
 
         if (player1Brain === Player.HUMAN && player2Brain === Player.HUMAN) {
             this.player1.setNameFromPrompt();
