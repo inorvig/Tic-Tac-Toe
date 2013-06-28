@@ -314,7 +314,9 @@
             var square = randomMove();
             dom.setText(square, computerPlayer.id);
         }
+
         game.board.draw();
+        game.board.setCurrentPlayer(game.otherPlayer(game.board.currentPlayer));
     };
 
     //Checks the whole board for a win
