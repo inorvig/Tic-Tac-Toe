@@ -30,6 +30,30 @@
     };
 
     var board = {
+    var Player = function(number, id, brain) {
+        this.id = id;
+        this.number = number;
+        this.brain = brain;
+
+        if (this.brain === Player.HUMAN) {
+            this.setName(prompt("What's player " + this.number + "'s name?",
+                                this.id));
+        }
+    };
+
+    Player.HUMAN = 0;
+    Player.COMPUTER = 1;
+
+    Player.prototype = {
+        setName: function(name) {
+            this.name = name;
+            dom.setText('player' + this.number, this.salutation());
+        },
+
+        salutation: function() {
+            return this.name !== undefined ? this.name : this.id;
+        }
+    };
         squares: function() {
             var squares = [];
             for (i = 0; i < 9; i++) {
