@@ -90,6 +90,9 @@
             return this.squares()[n] === undefined;
         },
 
+        isDraw: function() {
+            return this.moveCount() === 9;
+        },
         //Checks for a draw
         draw: function () {
             var isADraw = this.moveCount() === 9;
