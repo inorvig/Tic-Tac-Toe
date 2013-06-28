@@ -53,7 +53,8 @@
         }
     };
 
-    var Board = function(firstPlayer) {
+    var Board = function(game, firstPlayer) {
+        this.game = game;
         this.setCurrentPlayer(firstPlayer);
     };
 
@@ -115,7 +116,7 @@
             this.player2.setName("Computer");
         }
 
-        this.board = new Board(this.player1);
+        this.board = new Board(this, this.player1);
     };
 
     Game.prototype = {
