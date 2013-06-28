@@ -93,14 +93,8 @@
         isDraw: function() {
             return this.moveCount() === 9;
         },
+
         //Checks for a draw
-        draw: function () {
-            var isADraw = this.moveCount() === 9;
-            if (isADraw) {
-                alert("Cat's game!");
-                this.reset();
-            }
-            return isADraw;
         gameDrawn: function () {
             alert("Cat's game!");
             this.reset();
