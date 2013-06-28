@@ -29,7 +29,6 @@
         }
     };
 
-    var board = {
     var Player = function(number, id, brain) {
         this.id = id;
         this.number = number;
@@ -54,6 +53,12 @@
             return this.name !== undefined ? this.name : this.id;
         }
     };
+
+    var Board = function(firstPlayer) {
+        this.setCurrentPlayer(firstPlayer);
+    };
+
+    Board.prototype = {
         squares: function() {
             var squares = [];
             for (i = 0; i < 9; i++) {
@@ -83,10 +88,10 @@
 
         //Checks for a draw
         draw: function () {
-            var isADraw = board.moveCount() === 9;
+            var isADraw = this.moveCount() === 9;
             if (isADraw) {
                 alert("Cat's game!");
-                board.reset();
+                this.reset();
             }
             return isADraw;
         }
