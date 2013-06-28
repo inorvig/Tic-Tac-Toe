@@ -265,7 +265,6 @@
     };
     //Called after each player move when the AI is on. Checks for possible wins or forks, and moves accordingly.
     var computerMove = function () {
-        turn = c;
         var computerPlayer = game.board.currentPlayer;
         var otherPlayer = game.otherPlayer(game.board.currentPlayer);
         computerTempFork = 0;
@@ -315,7 +314,6 @@
             var square = randomMove();
             dom.setText(square, computerPlayer.id);
         }
-        turn = p;
         game.board.draw();
     };
 
