@@ -97,6 +97,18 @@
         }
     };
 
+
+    function Game(player1Brain, player2Brain) {
+        this.player1 = new Player(1, "X", player1Brain);
+        this.player2 = new Player(2, "O", player2Brain)
+        this.board = new Board(this.player1);
+    };
+
+    Game.prototype = {
+        otherPlayer: function(player) {
+            return player === this.player1 ? this.player2 : this.player1;
+        },
+    };
     var Scores = function() {
         var scores = {};
 
