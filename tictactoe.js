@@ -162,7 +162,6 @@
         game = new Game(Player.HUMAN, Player.HUMAN);
         computer = false;
         dom.setText('tense', " has");
-        scores.reset();
         dom.inline("turnlabel");
         dom.inline("alone");
         dom.hide("together");
