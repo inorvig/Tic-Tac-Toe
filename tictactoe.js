@@ -332,15 +332,9 @@
         }
         if (!computer) {
             scores.increment(player); ////////////// fix this stuff -- reassignment of p
-            if (player.id === "X") {
-                player = game.player1.id;
-            } else {
-                player = game.player2.id;
-            }
-        } else {
-            player = "You";
         }
-        alert(player + " won!");
+
+        alert(player.salutation() + " won!");
         game.board.reset();
         return true;
     };
