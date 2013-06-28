@@ -343,6 +343,7 @@
     };
 
     exports.move = move;
+    exports.game = game;
     exports.computerOn = computerOn;
     exports.computerOff = computerOff;
 })(this);
