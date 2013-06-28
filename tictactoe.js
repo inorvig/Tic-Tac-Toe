@@ -193,6 +193,9 @@
     };
 
     Board.prototype = {
+        isGameOver: function() {
+            return this.isDrawn() || this.isWon();
+        },
         playMove: function(player, square) {
             dom.setText(square, player.id);
         },
