@@ -210,8 +210,20 @@
             this.reset();
         },
 
-        playMove: function(player, square) {
-            dom.setText(square, player.id);
+        playMove: function(square) {
+            var mover = match.board.currentPlayer;
+            var nextMover = match.otherPlayer(match.board.currentPlayer);
+            if (match.board.isSpaceAvailable(square)) {
+                dom.setText(square, mover.id);
+                match.board.setCurrentPlayer(nextMover);
+                if (match.board.isGameOver()) {
+                    match.board.gameOver();
+                } else if (nextMover.brain === Player.COMPUTER) {
+                    computerMove();
+                }
+            } else { // space not available
+                alert("Oops! That space is occupied");
+            }
         },
 
         setCurrentPlayer: function(player) {
