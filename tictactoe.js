@@ -341,21 +341,9 @@
         dom.hide("together");
     };
 
-    //Called when a player makes a move. Determines who the current player is, sets the text of the square they clicked, checks for a win or a draw, and changes the turn label
-        var mover = match.board.currentPlayer;
-        var nextMover = match.otherPlayer(match.board.currentPlayer);
-        if (match.board.isSpaceAvailable(n)) {
-            match.board.playMove(mover, n);
-            match.board.setCurrentPlayer(nextMover);
-            if (match.board.isGameOver()) {
-                match.board.gameOver();
-            } else if (nextMover.brain === Player.COMPUTER) {
-                computerMove();
-            }
-        } else { // space not available
-            alert("Oops! That space is occupied");
-        }
+    // called when a player makes a move
     var humanMove = function (n) {
+        match.board.playMove(n);
     };
 
     //Called after each player move when the AI is on. Checks for possible wins or forks, and moves accordingly.
