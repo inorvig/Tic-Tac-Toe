@@ -146,20 +146,6 @@
 
     var scores = new Scores();
 
-    //Sets players to X and O if names are not provided, and otherwise sets player names
-    var playerNames = function () {
-        if (!player1) {
-            player1 = "X";
-        }
-        if (!player2) {
-            player2 = "O";
-        }
-        dom.setText('turn', player1);
-        dom.setText('player1', player1);
-        dom.setText('player2', player2);
-    };
-
-
     //Turns on the AI, sets the text of the labels relating to turn and player names, and resets the game
     var computerOn = function () {
         game = new Game(Player.HUMAN, Player.COMPUTER);
