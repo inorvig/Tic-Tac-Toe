@@ -217,18 +217,18 @@
         return false;
     };
     //Finds possible forks, adds to the count of total forks found, and sets the computerTempFork or playerTempFork depending on who the current player is
-    var fork = function (p, squares) {
+    var fork = function (player, squares) {
         var goal1 = dom.getText(squares[0]);
         var goal2 = dom.getText(squares[1]);
         var fork = squares[2];
         var a = dom.getText(squares[3]);
         var b = dom.getText(squares[4]);
         //If goal wins or fork are empty, and a and b are right, a fork
-        if ((goal1 === "") && (goal2 === "") && (dom.getText(fork) === "") && (a === p) && (b === p)) {
-            if (p === "O") {
+        if ((goal1 === "") && (goal2 === "") && (dom.getText(fork) === "") && (a === player.id) && (b === player.id)) {
+            if (player.id === "O") {
                 forkCount += 1;
             }
-            if (p === "X") {
+            if (player.id === "X") {
                 computerTempFork = fork;
             } else {
                 playerTempFork = fork;
