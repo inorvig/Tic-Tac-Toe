@@ -28,6 +28,97 @@
         }
     };
 
+    var ai = {
+        //Used to check for two in a row and forks. Takes in an array,
+        //a function, and a player, calls the function on each element
+        //in the array with the player as a parameter, and returns the
+        // result of the function if a square is found, or returns false.
+        checkCombos: function (array, func, player) {
+            for (var i in array) {
+                var check = func(player, array[i]);
+                if (check) {
+                    return (check);
+                }
+            }
+            return false;
+        },
+
+        //Returns the square that completes a winning line
+        two: function (player, squares) {
+            var first = squares[0];
+            var middle = squares[1];
+            var last = squares[2];
+            //If all three are full, can't block
+            if ((dom.getText(first) && dom.getText(middle) && dom.getText(last)) !== "") {
+                return false;
+            }
+            //Case 1: first and middle square match, should use last
+            if ((dom.getText(first) === player.id) && (dom.getText(middle) === player.id)) {
+                return last;
+            }
+            //Case 2: middle and last square match, should use first
+            else if ((dom.getText(middle) === player.id) &&
+                     (dom.getText(last) === player.id)) {
+                return first;
+            }
+            //Case 3: first and last square match, should use middle
+            else if ((dom.getText(first) === player.id) && (dom.getText(last) === player.id)) {
+                return middle;
+            }
+            return false;
+        },
+
+        //Finds possible forks, adds to the count of total forks found, and sets
+        //the computerTempFork or playerTempFork depending on who the current player is
+        fork: function (player, squares) {
+            var goal1 = dom.getText(squares[0]);
+            var goal2 = dom.getText(squares[1]);
+            var fork = squares[2];
+            var a = dom.getText(squares[3]);
+            var b = dom.getText(squares[4]);
+
+            //If goal wins or fork are empty, and a and b are right, a fork
+            if ((goal1 === "") && (goal2 === "") && (dom.getText(fork) === "") &&
+                (a === player.id) && (b === player.id)) {
+                if (player.id === "O") {
+                    forkCount += 1;
+                }
+                if (player.id === "X") {
+                    computerTempFork = fork;
+                } else {
+                    playerTempFork = fork;
+                }
+            }
+        },
+
+        //Returns a square that would make two in a row for the computer
+        possibleTwo: function (_, squares) {
+            var first = squares[0];
+            var middle = squares[1];
+            var last = squares[2];
+            //Case 1: first square is the computer, return last to make computer
+            //line less obvious to silly players
+            if (dom.getText(first) === "X") {
+                return last;
+            }
+
+            //Case 2: middle square or last square is the computer, return first
+            if ((dom.getText(middle) === "X") | (dom.getText(last) === "X")) {
+                return first;
+            }
+        },
+
+        //Returns a random empty square
+        randomMove: function () {
+            var squareID = Math.floor(Math.random() * 9);
+            if (match.board.isSpaceAvailable(squareID)) {
+                return squareID;
+            } else {
+                return this.randomMove();
+            }
+        }
+    };
+
     var Player = function(number, id, brain) {
         this.id = id;
         this.number = number;
@@ -119,7 +210,7 @@
         },
 
         isWinner: function(player) {
-            return checkCombos(lines, this.winWithRow, player);
+            return ai.checkCombos(lines, this.winWithRow, player);
         },
 
         //Checks a line for a win
@@ -132,8 +223,6 @@
             return true;
         }
     };
-
-
 
     function Match(player1Brain, player2Brain) {
         this.player1 = new Player(1, "X", player1Brain);
@@ -215,7 +304,7 @@
             } else if (match.board.isWon()) {
                 match.board.gameWon();
             } else {
-                if (computer) {
+                if (computer) { ///////////////////////
                     computerMove();
                 }
             }
@@ -224,81 +313,6 @@
         }
     };
 
-    //Used to check for two in a row and forks. Takes in an array, a function, and a player, calls the function on each element in the array with the player as a parameter, and returns the result of the function if a square is found, or returns false.
-    var checkCombos = function (array, func, player) {
-        for (var i in array) {
-            var check = func(player, array[i]);
-            if (check) {
-                return (check);
-            }
-        }
-        return false;
-    };
-    //Returns the square that completes a winning line
-    var two = function (player, squares) {
-        var first = squares[0];
-        var middle = squares[1];
-        var last = squares[2];
-        //If all three are full, can't block
-        if ((dom.getText(first) && dom.getText(middle) && dom.getText(last)) !== "") {
-            return false;
-        }
-        //Case 1: first and middle square match, should use last
-        if ((dom.getText(first) === player.id) && (dom.getText(middle) === player.id)) {
-            return last;
-        }
-        //Case 2: middle and last square match, should use first
-        else if ((dom.getText(middle) === player.id) && (dom.getText(last) === player.id)) {
-            return first;
-        }
-        //Case 3: first and last square match, should use middle
-        else if ((dom.getText(first) === player.id) && (dom.getText(last) === player.id)) {
-            return middle;
-        }
-        return false;
-    };
-    //Finds possible forks, adds to the count of total forks found, and sets the computerTempFork or playerTempFork depending on who the current player is
-    var fork = function (player, squares) {
-        var goal1 = dom.getText(squares[0]);
-        var goal2 = dom.getText(squares[1]);
-        var fork = squares[2];
-        var a = dom.getText(squares[3]);
-        var b = dom.getText(squares[4]);
-        //If goal wins or fork are empty, and a and b are right, a fork
-        if ((goal1 === "") && (goal2 === "") && (dom.getText(fork) === "") && (a === player.id) && (b === player.id)) {
-            if (player.id === "O") {
-                forkCount += 1;
-            }
-            if (player.id === "X") {
-                computerTempFork = fork;
-            } else {
-                playerTempFork = fork;
-            }
-        }
-    };
-    //Returns a square that would make two in a row for the computer
-    var possibleTwo = function (_, squares) {
-        var first = squares[0];
-        var middle = squares[1];
-        var last = squares[2];
-        //Case 1: first square is the computer, return last to make computer line less obvious to silly players
-        if (dom.getText(first) === "X") {
-            return last;
-        }
-        //Case 2: middle square or last square is the computer, return first
-        if ((dom.getText(middle) === "X") | (dom.getText(last) === "X")) {
-            return first;
-        }
-    };
-    //Returns a random empty square
-    var randomMove = function () {
-        var squareID = Math.floor(Math.random() * 9);
-        if (match.board.isSpaceAvailable(squareID)) {
-            return squareID;
-        } else {
-            return randomMove();
-        }
-    };
     //Called after each player move when the AI is on. Checks for possible wins or forks, and moves accordingly.
     var computerMove = function () {
         var computerPlayer = match.board.currentPlayer;
@@ -306,10 +320,10 @@
         computerTempFork = 0;
         playerTempFork = 0;
         forkCount = 0;
-        computerWin = checkCombos(lines, two, computerPlayer);
-        playerBlock = checkCombos(lines, two, otherPlayer);
-        computerFork = checkCombos(forks, fork, computerPlayer);
-        playerFork = checkCombos(forks, fork, otherPlayer);
+        computerWin = ai.checkCombos(lines, ai.two, computerPlayer);
+        playerBlock = ai.checkCombos(lines, ai.two, otherPlayer);
+        computerFork = ai.checkCombos(forks, ai.fork, computerPlayer);
+        playerFork = ai.checkCombos(forks, ai.fork, otherPlayer);
         //Option 1: The player just made the first move
         if (match.board.moveCount() === 1) {
             //If player made their first move in the center, computer moves in the corner
@@ -342,12 +356,12 @@
         }
         //Option 6: Computer makes two in a row if player has two or more possible forks
         else if (forkCount > 1) {
-            var goal = checkCombos(lines, possibleTwo, computerPlayer);
+            var goal = ai.checkCombos(lines, ai.possibleTwo, computerPlayer);
             dom.setText(goal, computerPlayer.id);
         }
         //Option 7: Computer makes any move (pretty sure this will never be reached)
         else {
-            var square = randomMove();
+            var square = ai.randomMove();
             dom.setText(square, computerPlayer.id);
         }
 
