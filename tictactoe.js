@@ -1,7 +1,7 @@
 ;(function(exports) {
     var match;
-    var lines = "012 345 678 036 147 258 048 246".split(' ');
-    var forks = "68402 02468 28406 06428 13026 15208 57826 37608 37415 13457 15437 37413 26013 08215 26857 08637 27104 07124 83524 23584 16748 18724 50346 56430".split(' ');
+    var LINES = "012 345 678 036 147 258 048 246".split(' ');
+    var FORKS = "68402 02468 28406 06428 13026 15208 57826 37608 37415 13457 15437 37413 26013 08215 26857 08637 27104 07124 83524 23584 16748 18724 50346 56430".split(' ');
 
     var dom = {
         //Returns the text of the element at the given html id
@@ -25,10 +25,10 @@
 
     var ai = {
         getMove: function(computerPlayer, otherPlayer) {
-            computerWin = ai.checkCombos(lines, this.two, computerPlayer);
-            playerBlock = ai.checkCombos(lines, this.two, otherPlayer);
-            computerFork = ai.checkCombos(forks, this.fork, computerPlayer);
-            playerFork = ai.checkCombos(forks, this.fork, otherPlayer);
+            var computerWin = ai.checkCombos(LINES, this.two, computerPlayer);
+            var playerBlock = ai.checkCombos(LINES, this.two, otherPlayer);
+            var computerFork = ai.checkCombos(FORKS, this.fork, computerPlayer);
+            var playerFork = ai.checkCombos(FORKS, this.fork, otherPlayer);
 
             //Option 1: The player just made the first move
             if (match.board.moveCount() === 1) {
@@ -59,7 +59,7 @@
             }
             //Option 6: Computer makes two in a row if player has two or more possible forks
             else if (computerFork && playerFork) {
-                return this.checkCombos(lines, this.possibleTwo, computerPlayer)
+                return this.checkCombos(LINES, this.possibleTwo, computerPlayer)
             }
             //Option 7: Computer makes any move
             else {
@@ -255,7 +255,7 @@
         },
 
         isWinner: function(player) {
-            return ai.checkCombos(lines, this.winWithRow, player);
+            return ai.checkCombos(LINES, this.winWithRow, player);
         },
 
         //Checks a line for a win
