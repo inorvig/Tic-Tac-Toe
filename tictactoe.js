@@ -32,10 +32,10 @@
             computerTempFork = 0;
             playerTempFork = 0;
             forkCount = 0;
-            computerWin = ai.checkCombos(lines, ai.two, computerPlayer);
-            playerBlock = ai.checkCombos(lines, ai.two, otherPlayer);
-            computerFork = ai.checkCombos(forks, ai.fork, computerPlayer);
-            playerFork = ai.checkCombos(forks, ai.fork, otherPlayer);
+            computerWin = ai.checkCombos(lines, this.two, computerPlayer);
+            playerBlock = ai.checkCombos(lines, this.two, otherPlayer);
+            computerFork = ai.checkCombos(forks, this.fork, computerPlayer);
+            playerFork = ai.checkCombos(forks, this.fork, otherPlayer);
             //Option 1: The player just made the first move
             if (match.board.moveCount() === 1) {
                 //If player made their first move in the center, computer moves in the corner
@@ -65,11 +65,11 @@
             }
             //Option 6: Computer makes two in a row if player has two or more possible forks
             else if (forkCount > 1) {
-                return ai.checkCombos(lines, ai.possibleTwo, computerPlayer)
+                return this.checkCombos(lines, this.possibleTwo, computerPlayer)
             }
             //Option 7: Computer makes any move
             else {
-                return ai.randomMove();
+                return this.randomMove();
             }
         },
 
