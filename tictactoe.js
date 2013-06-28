@@ -345,7 +345,7 @@
             var goal = ai.checkCombos(lines, ai.possibleTwo, computerPlayer);
             dom.setText(goal, computerPlayer.id);
         }
-        //Option 7: Computer makes any move (pretty sure this will never be reached)
+        //Option 7: Computer makes any move
         else {
             var square = ai.randomMove();
             dom.setText(square, computerPlayer.id);
