@@ -163,6 +163,7 @@
 
     //Turns on the AI, sets the text of the labels relating to turn and player names, and resets the game
     var computerOn = function () {
+        game = new Game(Player.HUMAN, Player.COMPUTER);
         computer = true;
         dom.setText('player1', "The computer");
         dom.setText('player2', "You");
@@ -176,6 +177,7 @@
 
     //Turns off the AI, sets the text of the labels relating to turn and player names, and resets the game
     var computerOff = function () {
+        game = new Game(Player.HUMAN, Player.HUMAN);
         computer = false;
         playerNames();
         dom.setText('tense', " has");
