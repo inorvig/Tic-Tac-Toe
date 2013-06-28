@@ -346,20 +346,18 @@
         match.board.playMove(n);
     };
 
-    //Called after each player move when the AI is on. Checks for possible wins or forks, and moves accordingly.
+    // called to make the computer move
     var computerMove = function () {
         var computerPlayer = match.board.currentPlayer;
         var otherPlayer = match.otherPlayer(match.board.currentPlayer);
-        match.board.playMove(computerPlayer, ai.getMove(computerPlayer, otherPlayer));
-        if (match.board.isGameOver()) {
-            match.board.gameOver();
-        } else {
-            match.board.setCurrentPlayer(match.otherPlayer(match.board.currentPlayer));
-        }
+        match.board.playMove(ai.getMove(computerPlayer, otherPlayer));
     };
 
     exports.humanMove = humanMove;
-    exports.match = match;
+    exports.reset = function() {
+        match.board.reset();
+    }
+
     exports.computerOn = computerOn;
     exports.computerOff = computerOff;
 })(this);
