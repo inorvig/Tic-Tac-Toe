@@ -342,7 +342,6 @@
     };
 
     //Called when a player makes a move. Determines who the current player is, sets the text of the square they clicked, checks for a win or a draw, and changes the turn label
-    var move = function (n) {
         var mover = match.board.currentPlayer;
         var nextMover = match.otherPlayer(match.board.currentPlayer);
         if (match.board.isSpaceAvailable(n)) {
@@ -356,6 +355,7 @@
         } else { // space not available
             alert("Oops! That space is occupied");
         }
+    var humanMove = function (n) {
     };
 
     //Called after each player move when the AI is on. Checks for possible wins or forks, and moves accordingly.
@@ -370,7 +370,7 @@
         }
     };
 
-    exports.move = move;
+    exports.humanMove = humanMove;
     exports.match = match;
     exports.computerOn = computerOn;
     exports.computerOff = computerOff;
