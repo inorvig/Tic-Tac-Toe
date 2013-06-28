@@ -185,6 +185,11 @@
                 }
             }
             if (!(winningMove(turn) || board.draw())) {
+        var mover = game.board.currentPlayer;
+        if (game.board.isSpaceAvailable(n)) {
+            dom.setText(n, mover.id);
+            game.board.setCurrentPlayer(game.otherPlayer(game.board.currentPlayer));
+            if (!(winningMove(mover) || game.board.draw())) {
                 if (computer) {
                     computerMove();
                 }
