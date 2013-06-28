@@ -324,7 +324,7 @@
     var match = new Match(Player.HUMAN, Player.HUMAN);
 
     // sets up a human vs player game
-    var computerOn = function () {
+    exports.computerOn = function () {
         match = new Match(Player.HUMAN, Player.COMPUTER);
         dom.setText('tense', " have");
         dom.hide("turnlabel");
@@ -333,7 +333,7 @@
     };
 
     // sets up a human vs human game
-    var computerOff = function () {
+    exports.computerOff = function () {
         match = new Match(Player.HUMAN, Player.HUMAN);
         dom.setText('tense', " has");
         dom.inline("turnlabel");
@@ -342,22 +342,18 @@
     };
 
     // called when a player makes a move
-    var humanMove = function (n) {
+    exports.humanMove = function (n) {
         match.board.playMove(n);
     };
 
     // called to make the computer move
-    var computerMove = function () {
+    exports.computerMove = function () {
         var computerPlayer = match.board.currentPlayer;
         var otherPlayer = match.otherPlayer(match.board.currentPlayer);
         match.board.playMove(ai.getMove(computerPlayer, otherPlayer));
     };
 
-    exports.humanMove = humanMove;
     exports.reset = function() {
         match.board.reset();
     }
-
-    exports.computerOn = computerOn;
-    exports.computerOff = computerOff;
 })(this);
