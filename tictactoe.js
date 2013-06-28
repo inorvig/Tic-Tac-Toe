@@ -7,8 +7,6 @@
     var computerTempFork = 0;
     var playerTempFork = 0;
     var forkCount = 0;
-    var player1 = prompt("What's player 1's name?", "X");
-    var player2 = prompt("What's player 2's name?", "O");
 
     var dom = {
         //Returns the text of the element at the given html id
@@ -34,11 +32,6 @@
         this.id = id;
         this.number = number;
         this.brain = brain;
-
-        if (this.brain === Player.HUMAN) {
-            this.setName(prompt("What's player " + this.number + "'s name?",
-                                this.id));
-        }
     };
 
     Player.HUMAN = 0;
@@ -48,6 +41,11 @@
         setName: function(name) {
             this.name = name;
             dom.setText('player' + this.number, this.salutation());
+        },
+
+        setNameFromPrompt: function() {
+            this.setName(prompt("What's player " + this.number + "'s name?",
+                                this.id));
         },
 
         salutation: function() {
@@ -99,9 +97,19 @@
     };
 
 
+
     function Game(player1Brain, player2Brain) {
         this.player1 = new Player(1, "X", player1Brain);
-        this.player2 = new Player(2, "O", player2Brain)
+        this.player2 = new Player(2, "O", player2Brain);
+
+        if (player1Brain === Player.HUMAN && player2Brain === Player.HUMAN) {
+            this.player1.setNameFromPrompt();
+            this.player2.setNameFromPrompt();
+        } else if (player1Brain === Player.HUMAN && player2Brain === Player.COMPUTER) {
+            this.player1.setName("You");
+            this.player2.setName("Computer");
+        }
+
         this.board = new Board(this.player1);
     };
 
