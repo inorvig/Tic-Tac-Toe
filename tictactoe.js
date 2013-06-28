@@ -3,10 +3,6 @@
     var lines = "012 345 678 036 147 258 048 246".split(' ');
     var forks = "68402 02468 28406 06428 13026 15208 57826 37608 37415 13457 15437 37413 26013 08215 26857 08637 27104 07124 83524 23584 16748 18724 50346 56430".split(' ');
 
-    var computerTempFork = 0;
-    var playerTempFork = 0;
-    var forkCount = 0;
-
     var dom = {
         //Returns the text of the element at the given html id
         getText: function (id) {
@@ -29,13 +25,11 @@
 
     var ai = {
         getMove: function(computerPlayer, otherPlayer) {
-            computerTempFork = 0;
-            playerTempFork = 0;
-            forkCount = 0;
             computerWin = ai.checkCombos(lines, this.two, computerPlayer);
             playerBlock = ai.checkCombos(lines, this.two, otherPlayer);
             computerFork = ai.checkCombos(forks, this.fork, computerPlayer);
             playerFork = ai.checkCombos(forks, this.fork, otherPlayer);
+
             //Option 1: The player just made the first move
             if (match.board.moveCount() === 1) {
                 //If player made their first move in the center, computer moves in the corner
