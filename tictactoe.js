@@ -184,7 +184,9 @@
         if (game.board.isSpaceAvailable(n)) {
             dom.setText(n, mover.id);
             game.board.setCurrentPlayer(game.otherPlayer(game.board.currentPlayer));
-            if (!(winningMove(mover) || game.board.draw())) {
+            if (game.board.isDraw()) {
+                game.board.gameDrawn();
+            } else if (!winningMove(mover)) {
                 if (computer) {
                     computerMove();
                 }
@@ -321,8 +323,11 @@
             dom.setText(square, computerPlayer.id);
         }
 
-        game.board.draw();
-        game.board.setCurrentPlayer(game.otherPlayer(game.board.currentPlayer));
+        if (game.board.isDraw()) {
+            game.board.gameDrawn();
+        } else {
+            game.board.setCurrentPlayer(game.otherPlayer(game.board.currentPlayer));
+        }
     };
 
     //Checks the whole board for a win
