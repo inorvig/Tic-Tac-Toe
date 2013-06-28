@@ -288,7 +288,7 @@
         var mover = match.board.currentPlayer;
         var nextMover = match.otherPlayer(match.board.currentPlayer);
         if (match.board.isSpaceAvailable(n)) {
-            dom.setText(n, mover.id);
+            match.board.playMove(mover, n);
             match.board.setCurrentPlayer(nextMover);
             if (match.board.isDrawn()) {
                 match.board.gameDrawn();
@@ -317,38 +317,38 @@
         if (match.board.moveCount() === 1) {
             //If player made their first move in the center, computer moves in the corner
             if (dom.getText(4) === otherPlayer.id) {
-                dom.setText(0, computerPlayer.id);
+                match.board.playMove(computerPlayer, 0);
             }
             //Otherwise, computer moves in the center
             else {
-                dom.setText(4, computerPlayer.id);
+                match.board.playMove(computerPlayer, 4);
             }
         }
         //Option 2: Computer has two in a row and wins
         else if (computerWin) {
-            dom.setText(computerWin, computerPlayer.id);
+            match.board.playMove(computerPlayer, computerWin);
         }
         //Option 3: Opponent has two in a row, computer blocks
         else if (playerBlock) {
             dom.setText(playerBlock, computerPlayer.id);
+            match.board.playMove(computerPlayer, playerBlock);
         }
         //Option 4: Computer makes a fork
         else if (computerTempFork !== 0) {
-            dom.setText(computerTempFork, computerPlayer.id);
+            match.board.playMove(computerPlayer, computerTempFork);
         }
         //Option 5: Computer blocks a fork if there is only one player fork possible
         else if (forkCount === 1) {
-            dom.setText(playerTempFork, computerPlayer.id);
+            match.board.playMove(computerPlayer, playerTempFork);
         }
         //Option 6: Computer makes two in a row if player has two or more possible forks
         else if (forkCount > 1) {
-            var goal = ai.checkCombos(lines, ai.possibleTwo, computerPlayer);
-            dom.setText(goal, computerPlayer.id);
+            match.board.playMove(computerPlayer,
+                                 ai.checkCombos(lines, ai.possibleTwo, computerPlayer));
         }
         //Option 7: Computer makes any move
         else {
-            var square = ai.randomMove();
-            dom.setText(square, computerPlayer.id);
+            match.board.playMove(computerPlayer, ai.randomMove());
         }
 
         if (match.board.isDrawn()) {
