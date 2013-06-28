@@ -155,7 +155,6 @@
         dom.hide("turnlabel");
         dom.hide("alone");
         dom.inline("together");
-        board.reset();
     };
 
     //Turns off the AI, sets the text of the labels relating to turn and player names, and resets the game
@@ -167,7 +166,6 @@
         dom.inline("turnlabel");
         dom.inline("alone");
         dom.hide("together");
-        board.reset();
     };
 
     //Called when a player makes a move. Determines who the current player is, sets the text of the square they clicked, checks for a win or a draw, and changes the turn label
