@@ -345,5 +345,4 @@
     exports.move = move;
     exports.computerOn = computerOn;
     exports.computerOff = computerOff;
-    exports.board = board;
 })(this);
