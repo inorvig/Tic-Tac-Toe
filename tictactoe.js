@@ -200,7 +200,7 @@
             var winner = this.isWinner(this.match.player1) ?
                 this.match.player1 :
                 this.match.player2;
-            scores.increment(winner);
+            match.scores.increment(winner);
             alert(winner.salutation() + " won!");
             match.board.reset();
         },
@@ -250,6 +250,7 @@
         }
 
         this.board = new Board(this, this.player1);
+        this.scores = new Scores();
     };
 
     Match.prototype = {
@@ -259,9 +260,6 @@
     };
 
     var match = new Match(Player.HUMAN, Player.HUMAN);
-
-
-    var scores = new Scores();
 
     //Turns on the AI, sets the text of the labels relating to turn and player names, and resets the game
     var computerOn = function () {
