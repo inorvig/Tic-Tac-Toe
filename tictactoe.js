@@ -212,7 +212,9 @@
             game.board.setCurrentPlayer(game.otherPlayer(game.board.currentPlayer));
             if (game.board.isDrawn()) {
                 game.board.gameDrawn();
-            } else if (!winningMove(mover)) {
+            } else if (game.board.isWon()) {
+                game.board.gameWon();
+            } else {
                 if (computer) {
                     computerMove();
                 }
