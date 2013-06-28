@@ -90,7 +90,7 @@
             return this.squares()[n] === undefined;
         },
 
-        isDraw: function() {
+        isDrawn: function() {
             return this.moveCount() === 9;
         },
 
@@ -178,7 +178,7 @@
         if (game.board.isSpaceAvailable(n)) {
             dom.setText(n, mover.id);
             game.board.setCurrentPlayer(game.otherPlayer(game.board.currentPlayer));
-            if (game.board.isDraw()) {
+            if (game.board.isDrawn()) {
                 game.board.gameDrawn();
             } else if (!winningMove(mover)) {
                 if (computer) {
@@ -317,7 +317,7 @@
             dom.setText(square, computerPlayer.id);
         }
 
-        if (game.board.isDraw()) {
+        if (game.board.isDrawn()) {
             game.board.gameDrawn();
         } else {
             game.board.setCurrentPlayer(game.otherPlayer(game.board.currentPlayer));
