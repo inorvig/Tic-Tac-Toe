@@ -24,16 +24,16 @@
     };
 
     var ai = {
-        getMove: function(computerPlayer, otherPlayer) {
             var computerWin = ai.checkCombos(LINES, this.two, computerPlayer);
             var playerBlock = ai.checkCombos(LINES, this.two, otherPlayer);
             var computerFork = ai.checkCombos(FORKS, this.fork, computerPlayer);
             var playerFork = ai.checkCombos(FORKS, this.fork, otherPlayer);
+        getMove: function(board, computerPlayer, otherPlayer) {
 
             //Option 1: The player just made the first move
-            if (match.board.moveCount() === 1) {
+            if (board.moveCount() === 1) {
                 //If player made their first move in the center, computer moves in the corner
-                if (match.board.square(4) === otherPlayer.id) {
+                if (board.square(4) === otherPlayer.id) {
                     return 0;
                 }
                 //Otherwise, computer moves in the center
@@ -341,7 +341,7 @@
     exports.computerMove = function () {
         var computerPlayer = match.board.currentPlayer;
         var otherPlayer = match.otherPlayer(match.board.currentPlayer);
-        match.board.playMove(ai.getMove(computerPlayer, otherPlayer));
+        match.board.playMove(ai.getMove(match.board, computerPlayer, otherPlayer));
     };
 
     exports.reset = function() {
