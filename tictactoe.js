@@ -225,6 +225,9 @@
                 squares.push(square === "" ? undefined : square);
             }
             return squares;
+
+        square: function(i) {
+            return this.squares()[i];
         },
 
         moveCount: function() {
