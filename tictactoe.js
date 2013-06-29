@@ -220,11 +220,12 @@
 
         squares: function() {
             var squares = [];
-            for (i = 0; i < 9; i++) {
+            for (var i = 0; i < 9; i++) {
                 var square = dom.getText(i);
                 squares.push(square === "" ? undefined : square);
             }
             return squares;
+        },
 
         square: function(i) {
             return this.squares()[i];
@@ -263,7 +264,7 @@
 
         //Checks a line for a win
         isWinWithRow: function (player, squares) {
-            for (i = 0; i < 3; i++) {
+            for (var i = 0; i < 3; i++) {
                 if (match.board.square(squares[i]) !== player.id) {
                     return false;
                 }
