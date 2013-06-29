@@ -33,7 +33,7 @@
             //Option 1: The player just made the first move
             if (match.board.moveCount() === 1) {
                 //If player made their first move in the center, computer moves in the corner
-                if (dom.getText(4) === otherPlayer.id) {
+                if (match.board.square(4) === otherPlayer.id) {
                     return 0;
                 }
                 //Otherwise, computer moves in the center
@@ -83,24 +83,23 @@
 
         //Returns the square that completes a winning line
         two: function (player, squares) {
-            var first = squares[0];
-            var middle = squares[1];
-            var last = squares[2];
+            var first = match.board.square(squares[0]);
+            var middle = match.board.square(squares[1]);
+            var last = match.board.square(squares[2]);
             //If all three are full, can't block
-            if ((dom.getText(first) && dom.getText(middle) && dom.getText(last)) !== "") {
+            if (first !== undefined && middle !== undefined && last !== undefined) {
                 return false;
             }
             //Case 1: first and middle square match, should use last
-            if ((dom.getText(first) === player.id) && (dom.getText(middle) === player.id)) {
+            if (first === player.id && middle === player.id) {
                 return last;
             }
             //Case 2: middle and last square match, should use first
-            else if ((dom.getText(middle) === player.id) &&
-                     (dom.getText(last) === player.id)) {
+            else if (middle === player.id && last === player.id) {
                 return first;
             }
             //Case 3: first and last square match, should use middle
-            else if ((dom.getText(first) === player.id) && (dom.getText(last) === player.id)) {
+            else if (first === player.id && last === player.id) {
                 return middle;
             }
             return false;
@@ -108,14 +107,16 @@
 
         // finds possible forks
         fork: function (player, squares) {
-            var goal1 = dom.getText(squares[0]);
-            var goal2 = dom.getText(squares[1]);
+            var goal1 = match.board.square(squares[0]);
+            var goal2 = match.board.square(squares[1]);
             var fork = squares[2];
-            var a = dom.getText(squares[3]);
-            var b = dom.getText(squares[4]);
+            var a = match.board.squares(squares[3]);
+            var b = match.board.squares(squares[4]);
 
             //If goal wins or fork are empty, and a and b are right, a fork
-            if ((goal1 === "") && (goal2 === "") && (dom.getText(fork) === "") &&
+            if ((goal1 === undefined) &&
+                (goal2 === undefined) &&
+                (match.board.square(fork) === undefined) &&
                 (a === player.id) && (b === player.id)) {
                 return fork;
             }
@@ -123,17 +124,17 @@
 
         //Returns a square that would make two in a row for the computer
         possibleTwo: function (_, squares) {
-            var first = squares[0];
-            var middle = squares[1];
-            var last = squares[2];
+            var first = match.board.squares(squares[0]);
+            var middle = match.board.squares(squares[1]);
+            var last = match.board.squares(squares[2]);
             //Case 1: first square is the computer, return last to make computer
             //line less obvious to silly players
-            if (dom.getText(first) === "X") {
+            if (first === "X") {
                 return last;
             }
 
             //Case 2: middle square or last square is the computer, return first
-            if ((dom.getText(middle) === "X") | (dom.getText(last) === "X")) {
+            if (middle === "X" | last === "X") {
                 return first;
             }
         },
@@ -260,7 +261,7 @@
         //Checks a line for a win
         isWinWithRow: function (player, squares) {
             for (i = 0; i < 3; i++) {
-                if (dom.getText(squares[i]) !== player.id) {
+                if (match.board.square(squares[i]) !== player.id) {
                     return false;
                 }
             }
