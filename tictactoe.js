@@ -198,13 +198,13 @@
         },
 
         playMove: function(square) {
-            var mover = match.board.currentPlayer;
-            var nextMover = match.otherPlayer(match.board.currentPlayer);
-            if (match.board.isSpaceAvailable(square)) {
+            var mover = this.currentPlayer;
+            var nextMover = match.otherPlayer(this.currentPlayer);
+            if (this.isSpaceAvailable(square)) {
                 dom.setText(square, mover.id);
-                match.board.setCurrentPlayer(nextMover);
-                if (match.board.isGameOver()) {
-                    match.board.gameOver();
+                this.setCurrentPlayer(nextMover);
+                if (this.isGameOver()) {
+                    this.gameOver();
                 } else if (nextMover.brain === Player.COMPUTER) {
                     computerMove();
                 }
