@@ -24,11 +24,11 @@
     };
 
     var ai = {
-            var computerWin = ai.checkCombos(LINES, this.two, computerPlayer);
-            var playerBlock = ai.checkCombos(LINES, this.two, otherPlayer);
-            var computerFork = ai.checkCombos(FORKS, this.fork, computerPlayer);
-            var playerFork = ai.checkCombos(FORKS, this.fork, otherPlayer);
         getMove: function(board, computerPlayer, otherPlayer) {
+            var computerWin = ai.checkCombos(board, LINES, this.two, computerPlayer);
+            var playerBlock = ai.checkCombos(board, LINES, this.two, otherPlayer);
+            var computerFork = ai.checkCombos(board, FORKS, this.fork, computerPlayer);
+            var playerFork = ai.checkCombos(board, FORKS, this.fork, otherPlayer);
 
             //Option 1: The player just made the first move
             if (board.moveCount() === 1) {
@@ -59,7 +59,7 @@
             }
             //Option 6: Computer makes two in a row if player has two or more possible forks
             else if (computerFork && playerFork) {
-                return this.checkCombos(LINES, this.possibleTwo, computerPlayer)
+                return this.checkCombos(board, LINES, this.possibleTwo, computerPlayer)
             }
             //Option 7: Computer makes any move
             else {
@@ -71,9 +71,9 @@
         //a function, and a player, calls the function on each element
         //in the array with the player as a parameter, and returns the
         // result of the function if a square is found, or returns false.
-        checkCombos: function (array, func, player) {
+        checkCombos: function (board, array, func, player) {
             for (var i in array) {
-                var check = func(player, array[i]);
+                var check = func(board, player, array[i]);
                 if (check) {
                     return check;
                 }
@@ -259,7 +259,7 @@
         },
 
         isWinner: function(player) {
-            return ai.checkCombos(LINES, this.isWinWithRow, player);
+            return ai.checkCombos(this, LINES, this.isWinWithRow, player);
         },
 
         //Checks a line for a win
