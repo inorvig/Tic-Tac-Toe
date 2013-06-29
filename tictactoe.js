@@ -75,7 +75,7 @@
             for (var i in array) {
                 var check = func(player, array[i]);
                 if (check) {
-                    return (check);
+                    return check;
                 }
             }
             return false;
@@ -114,10 +114,10 @@
             var b = match.board.squares(squares[4]);
 
             //If goal wins or fork are empty, and a and b are right, a fork
-            if ((goal1 === undefined) &&
-                (goal2 === undefined) &&
-                (match.board.square(fork) === undefined) &&
-                (a === player.id) && (b === player.id)) {
+            if (goal1 === undefined &&
+                goal2 === undefined &&
+                match.board.square(fork) === undefined &&
+                a === player.id && b === player.id) {
                 return fork;
             }
         },
