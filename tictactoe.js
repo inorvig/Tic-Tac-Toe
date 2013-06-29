@@ -185,9 +185,9 @@
         },
 
         gameOver: function() {
-            if (match.board.isDrawn()) {
+            if (this.isDrawn()) {
                 alert("Cat's game!");
-            } else if (match.board.isWon()) {
+            } else if (this.isWon()) {
                 var winner = this.isWinner(this.match.player1) ?
                     this.match.player1 :
                     this.match.player2;
