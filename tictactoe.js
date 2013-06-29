@@ -82,10 +82,10 @@
         },
 
         //Returns the square that completes a winning line
-        two: function (player, squares) {
-            var first = match.board.square(squares[0]);
-            var middle = match.board.square(squares[1]);
-            var last = match.board.square(squares[2]);
+        two: function (board, player, squares) {
+            var first = board.square(squares[0]);
+            var middle = board.square(squares[1]);
+            var last = board.square(squares[2]);
             //If all three are full, can't block
             if (first !== undefined && middle !== undefined && last !== undefined) {
                 return false;
@@ -106,27 +106,27 @@
         },
 
         // finds possible forks
-        fork: function (player, squares) {
-            var goal1 = match.board.square(squares[0]);
-            var goal2 = match.board.square(squares[1]);
+        fork: function (board, player, squares) {
+            var goal1 = board.square(squares[0]);
+            var goal2 = board.square(squares[1]);
             var fork = squares[2];
-            var a = match.board.squares(squares[3]);
-            var b = match.board.squares(squares[4]);
+            var a = board.squares(squares[3]);
+            var b = board.squares(squares[4]);
 
             //If goal wins or fork are empty, and a and b are right, a fork
             if (goal1 === undefined &&
                 goal2 === undefined &&
-                match.board.square(fork) === undefined &&
+                board.square(fork) === undefined &&
                 a === player.id && b === player.id) {
                 return fork;
             }
         },
 
         //Returns a square that would make two in a row for the computer
-        possibleTwo: function (_, squares) {
-            var first = match.board.squares(squares[0]);
-            var middle = match.board.squares(squares[1]);
-            var last = match.board.squares(squares[2]);
+        possibleTwo: function (board, _, squares) {
+            var first = board.squares(squares[0]);
+            var middle = board.squares(squares[1]);
+            var last = board.squares(squares[2]);
             //Case 1: first square is the computer, return last to make computer
             //line less obvious to silly players
             if (first === "X") {
@@ -263,9 +263,9 @@
         },
 
         //Checks a line for a win
-        isWinWithRow: function (player, squares) {
+        isWinWithRow: function (board, player, squares) {
             for (var i = 0; i < 3; i++) {
-                if (match.board.square(squares[i]) !== player.id) {
+                if (board.square(squares[i]) !== player.id) {
                     return false;
                 }
             }
