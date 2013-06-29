@@ -63,7 +63,7 @@
             }
             //Option 7: Computer makes any move
             else {
-                return this.randomMove();
+                return this.randomMove(board);
             }
         },
 
@@ -140,12 +140,12 @@
         },
 
         //Returns a random empty square
-        randomMove: function () {
+        randomMove: function (board) {
             var squareID = Math.floor(Math.random() * 9);
-            if (match.board.isSpaceAvailable(squareID)) {
+            if (board.isSpaceAvailable(squareID)) {
                 return squareID;
             } else {
-                return this.randomMove();
+                return this.randomMove(board);
             }
         }
     };
