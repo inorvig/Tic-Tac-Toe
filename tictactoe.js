@@ -25,10 +25,10 @@
 
     var ai = {
         getMove: function(board, computerPlayer, otherPlayer) {
-            var computerWin = ai.checkCombos(board, LINES, this.two, computerPlayer);
-            var playerBlock = ai.checkCombos(board, LINES, this.two, otherPlayer);
-            var computerFork = ai.checkCombos(board, FORKS, this.fork, computerPlayer);
-            var playerFork = ai.checkCombos(board, FORKS, this.fork, otherPlayer);
+            var computerWin = ai.firstCombo(board, LINES, this.two, computerPlayer);
+            var playerBlock = ai.firstCombo(board, LINES, this.two, otherPlayer);
+            var computerFork = ai.firstCombo(board, FORKS, this.fork, computerPlayer);
+            var playerForks = ai.gatherCombos(board, FORKS, this.fork, otherPlayer);
 
             //Option 1: The player just made the first move
             if (board.moveCount() === 1) {
@@ -54,12 +54,11 @@
                 return computerFork;
             }
             //Option 5: Computer blocks a fork if there is only one player fork possible
-            else if (playerFork) {
+            else if (playerForks.length === 1) {
                 return playerFork;
             }
-            //Option 6: Computer makes two in a row if player has two or more possible forks
-            else if (computerFork && playerFork) {
-                return this.checkCombos(board, LINES, this.possibleTwo, computerPlayer)
+            else if (playerForks.length > 1) {
+                return this.firstCombo(board, LINES, this.possibleTwo, computerPlayer);
             }
             //Option 7: Computer makes any move
             else {
@@ -71,14 +70,19 @@
         //a function, and a player, calls the function on each element
         //in the array with the player as a parameter, and returns the
         // result of the function if a square is found, or returns false.
-        checkCombos: function (board, array, func, player) {
+        firstCombo: function (board, array, func, player) {
+            return this.gatherCombos(board, array, func, player)[0];
+        },
+
+        gatherCombos: function (board, array, func, player) {
+            var combos = [];
             for (var i in array) {
                 var check = func(board, player, array[i]);
-                if (check) {
-                    return check;
+                if (check !== false) {
+                    return combos.push(check);
                 }
             }
-            return false;
+            return combos;
         },
 
         //Returns the square that completes a winning line
@@ -259,7 +263,7 @@
         },
 
         isWinner: function(player) {
-            return ai.checkCombos(this, LINES, this.isWinWithRow, player);
+            return ai.firstCombo(this, LINES, this.isWinWithRow, player) !== undefined;
         },
 
         //Checks a line for a win
