@@ -55,7 +55,7 @@
             }
             //Option 5: Computer blocks a fork if there is only one player fork possible
             else if (playerForks.length === 1) {
-                return playerFork;
+                return playerForks[0];
             }
             else if (playerForks.length > 1) {
                 return this.firstCombo(board, LINES, this.possibleTwo, computerPlayer);
@@ -78,8 +78,8 @@
             var combos = [];
             for (var i in array) {
                 var check = func(board, player, array[i]);
-                if (check !== false) {
-                    return combos.push(check);
+                if (check !== false && check !== undefined) {
+                    combos.push(check);
                 }
             }
             return combos;
@@ -96,15 +96,15 @@
             }
             //Case 1: first and middle square match, should use last
             if (first === player.id && middle === player.id) {
-                return last;
+                return squares[2];
             }
             //Case 2: middle and last square match, should use first
             else if (middle === player.id && last === player.id) {
-                return first;
+                return squares[0];
             }
             //Case 3: first and last square match, should use middle
             else if (first === player.id && last === player.id) {
-                return middle;
+                return squares[1];
             }
             return false;
         },
@@ -114,8 +114,8 @@
             var goal1 = board.square(squares[0]);
             var goal2 = board.square(squares[1]);
             var fork = squares[2];
-            var a = board.squares(squares[3]);
-            var b = board.squares(squares[4]);
+            var a = board.square(squares[3]);
+            var b = board.square(squares[4]);
 
             //If goal wins or fork are empty, and a and b are right, a fork
             if (goal1 === undefined &&
@@ -124,22 +124,23 @@
                 a === player.id && b === player.id) {
                 return fork;
             }
+			return false;
         },
 
         //Returns a square that would make two in a row for the computer
-        possibleTwo: function (board, _, squares) {
-            var first = board.squares(squares[0]);
-            var middle = board.squares(squares[1]);
-            var last = board.squares(squares[2]);
+        possibleTwo: function (board, player, squares) {
+            var first = board.square(squares[0]);
+            var middle = board.square(squares[1]);
+            var last = board.square(squares[2]);
             //Case 1: first square is the computer, return last to make computer
             //line less obvious to silly players
-            if (first === "X") {
-                return last;
+            if (first === player.id) {
+                return squares[2];
             }
 
             //Case 2: middle square or last square is the computer, return first
-            if (middle === "X" | last === "X") {
-                return first;
+            if (middle === player.id | last === player.id) {
+                return squares[0];
             }
         },
 
